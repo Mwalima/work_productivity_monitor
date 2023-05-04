@@ -119,6 +119,7 @@ public class User extends JFrame {
             View view = new View();
             view.wrongCredentialsFrame();
 
+
         } else {
             while (resultSet.next()) {
                 usernameValue = resultSet.getString("username");
