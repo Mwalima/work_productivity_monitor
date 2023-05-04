@@ -110,6 +110,7 @@ public class User extends JFrame {
 
         String usernameValue = " ";
 
+
         /*
         TODO Create good redirect if user add wrong credentials
          */
