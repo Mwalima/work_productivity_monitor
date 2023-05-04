@@ -9,7 +9,9 @@ import java.util.logging.Logger;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.monitor.View;
 
-public class User {
+import javax.swing.*;
+
+public class User extends JFrame {
         private static final Logger log = null;
         private Integer id;
         private String username;
@@ -108,10 +110,14 @@ public class User {
 
         String usernameValue = " ";
 
+        /*
+        TODO Create good redirect if user add wrong credentials
+         */
         if (!resultSet.isBeforeFirst()) {
             System.out.println("No data");
             View view = new View();
             view.wrongCredentialsFrame();
+
         } else {
             while (resultSet.next()) {
                 usernameValue = resultSet.getString("username");
