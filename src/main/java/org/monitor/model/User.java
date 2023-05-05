@@ -110,24 +110,21 @@ public class User extends JFrame {
 
         String usernameValue = " ";
 
-
         /*
         TODO Create good redirect if user add wrong credentials
          */
-        if (!resultSet.isBeforeFirst()) {
-            System.out.println("No data");
-            View view = new View();
-            view.wrongCredentialsFrame();
-
-
-        } else {
+//        if (!resultSet.isBeforeFirst()) {
+//            System.out.println("No data");
+//            View view = new View();
+//            view.wrongCredentialsFrame();
+//        } else {
             while (resultSet.next()) {
                 usernameValue = resultSet.getString("username");
                 //String passwordValue = resultSet.getString("password");
             }
             return usernameValue;
-       }
-       return usernameValue;
+//       }
+//       return usernameValue;
     }
 
 }

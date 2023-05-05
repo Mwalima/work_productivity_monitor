@@ -1,37 +1,34 @@
 package org.monitor;
-//import com.formdev.flatlaf.FlatLightLaf;
-
 import org.monitor.model.User;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.logging.Logger;
 
-import static java.lang.System.exit;
-
-
-public class View extends JFrame implements ActionListener {
+public class View extends JFrame implements ActionListener, KeyListener {
 
     private int score;
     private JLabel username, password,welkomeText;
     private JTextField usernameText;
+    private JTextArea mousecountText,keyboardcountText;
     private JPasswordField passwordText;
     private JButton login,exit;
     private JPanel loginPanel, wrongcredPanel,monitoringPanel,closePanel;
     private static final Logger log;
-
-    private ImageIcon logo = new ImageIcon("/home/linuxpc/Documents/studie/Programmeren/Les1&2/work_productivity_monitor/src/main/resources/images/logo_small.png");
-    public View(){
-        loginForm();
-    }
+    private boolean monitoring;
+    static final String newline = System.getProperty("line.separator");
 
     static {
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%4$-7s] %5$s %n");
         log = Logger.getLogger(Monitor.class.getName());
+    }
+
+    private ImageIcon logo = new ImageIcon("/home/linuxpc/Documents/studie/Programmeren/Les1&2/work_productivity_monitor/src/main/resources/images/logo_small.png");
+    public View(){
+        loginForm();
     }
 
     public Component loginForm() {
@@ -113,11 +110,36 @@ public class View extends JFrame implements ActionListener {
         welkomeText.setForeground(new Color(245, 239, 239));
         welkomeText.setBounds(200, 28, 450, 200);
 
+        JLabel mousecount = new JLabel();
+        mousecount.setText("mouse activity counter");
+        mousecount.setForeground(new Color(191,191,191));
+        mousecount.setBounds(200, 208, 300, 20);
+
+        mousecountText = new JTextArea();
+        mousecountText.setBounds(200, 227, 500, 28);
+        mousecountText.setEditable(false);
+
+        JLabel keyboardcount = new JLabel();
+        keyboardcount.setText("Keyboard activity counter");
+        keyboardcount.setForeground(new Color(191,191,191));
+        keyboardcount.setBounds(200, 255, 300, 20);
+
+        keyboardcountText = new JTextArea();
+        keyboardcountText.setBounds(200, 275, 500, 28);
+        keyboardcountText.setEditable(false);
+
         monitoringPanel = new JPanel();
         monitoringPanel.setLayout(null);
         monitoringPanel.add(welkomeText);
         monitoringPanel.setBackground(new Color(40, 31, 107));
+        monitoringPanel.add(mousecount);
+        monitoringPanel.add(mousecountText);
+        monitoringPanel.add(keyboardcount);
+        monitoringPanel.add(keyboardcountText);
+
         add(monitoringPanel, BorderLayout.CENTER);
+        mousecountText.addKeyListener(this);
+        keyboardcountText.addKeyListener(this);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(800, 600);
@@ -151,9 +173,6 @@ public class View extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public void CloseFrame(){
-        super.dispose();
-    }
     public void wrongCredentialsFrame(){
         Monitor formwroncred = new Monitor();
         welkomeText = new JLabel();
@@ -184,7 +203,6 @@ public class View extends JFrame implements ActionListener {
         TODO  get user entered username from the usernameText
         String passValue = passwordText.getText();
          */
-
         if (e.getSource() == login) {
             try {
                 //call the database and check the input
@@ -206,5 +224,87 @@ public class View extends JFrame implements ActionListener {
         if (e.getSource() == exit) {
            closeFrame();
         }
+        //key action part
+        mousecountText.setText("");
+        keyboardcountText.setText("");
+        //Return the focus to the typing area.
+        keyboardcountText.requestFocusInWindow();
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        displayInfo(e, "KEY TYPED: ");
+    }
+    @Override
+    public void keyPressed(KeyEvent e) {
+        displayInfo(e, "KEY PRESSED: ");
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        displayInfo(e, "KEY RELEASED: ");
+    }
+
+    /*
+     * We have to jump through some hoops to avoid
+     * trying to print non-printing characters
+     * such as Shift.  (Not only do they not print,
+     * but if you put them in a String, the characters
+     * afterward won't show up in the text area.)
+     */
+    private void displayInfo(KeyEvent e, String keyStatus){
+
+        //You should only rely on the key char if the event
+        //is a key typed event.
+        int id = e.getID();
+        String keyString;
+        if (id == KeyEvent.KEY_TYPED) {
+            char c = e.getKeyChar();
+            keyString = "key character = '" + c + "'";
+        } else {
+            int keyCode = e.getKeyCode();
+            keyString = "key code = " + keyCode
+                    + " ("
+                    + KeyEvent.getKeyText(keyCode)
+                    + ")";
+        }
+
+        int modifiersEx = e.getModifiersEx();
+        String modString = "extended modifiers = " + modifiersEx;
+        String tmpString = KeyEvent.getModifiersExText(modifiersEx);
+        if (tmpString.length() > 0) {
+            modString += " (" + tmpString + ")";
+        } else {
+            modString += " (no extended modifiers)";
+        }
+
+        String actionString = "action key? ";
+        if (e.isActionKey()) {
+            actionString += "YES";
+        } else {
+            actionString += "NO";
+        }
+
+        String locationString = "key location: ";
+        int location = e.getKeyLocation();
+        if (location == KeyEvent.KEY_LOCATION_STANDARD) {
+            locationString += "standard";
+        } else if (location == KeyEvent.KEY_LOCATION_LEFT) {
+            locationString += "left";
+        } else if (location == KeyEvent.KEY_LOCATION_RIGHT) {
+            locationString += "right";
+        } else if (location == KeyEvent.KEY_LOCATION_NUMPAD) {
+            locationString += "numpad";
+        } else { // (location == KeyEvent.KEY_LOCATION_UNKNOWN)
+            locationString += "unknown";
+        }
+
+        keyboardcountText.append(keyStatus + newline
+                + "    " + keyString + newline
+                + "    " + modString + newline
+                + "    " + actionString + newline
+                + "    " + locationString + newline);
+        keyboardcountText.setCaretPosition(keyboardcountText.getDocument().getLength());
+    }
+
 }
