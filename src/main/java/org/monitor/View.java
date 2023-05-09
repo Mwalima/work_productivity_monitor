@@ -6,26 +6,30 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class View extends JFrame implements ActionListener, KeyListener {
 
     private int score;
-    private JLabel username, password,welkomeText;
-    private JTextField usernameText;
+    private JLabel username, password,welkomeText,keyboardcount,mousecount,keycounttext,mousecounttextfield;
+    private JTextField usernameText, keycount,mousecountfield;
     private JTextArea mousecountText,keyboardcountText;
     private JPasswordField passwordText;
     private JButton login,exit;
     private JPanel loginPanel, wrongcredPanel,monitoringPanel,closePanel;
     private static final Logger log;
     private boolean monitoring;
+    private int[] telArray;
+    private JScrollPane scrollPaneKey,scrollPaneMouse;
     static final String newline = System.getProperty("line.separator");
+
+    public int count = 0;
 
     static {
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%4$-7s] %5$s %n");
         log = Logger.getLogger(Monitor.class.getName());
     }
-
     private ImageIcon logo = new ImageIcon("/home/linuxpc/Documents/studie/Programmeren/Les1&2/work_productivity_monitor/src/main/resources/images/logo_small.png");
     public View(){
         loginForm();
@@ -83,7 +87,6 @@ public class View extends JFrame implements ActionListener, KeyListener {
         exit.addActionListener(this);
         return loginPanel;
     }
-
     /**
      * guid of the start screen called loginframe
      * @return
@@ -91,11 +94,10 @@ public class View extends JFrame implements ActionListener, KeyListener {
     public JComponent getGui(){
         return loginPanel;
     }
-
     public void loginFrame() {
         Monitor form = new Monitor();
         form.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        form.setSize(800, 600);
+        form.setSize(800, 800);
         form.setTitle("Provincie Zuid-Holland Werk Monitor scherm 1");
         form.setLocationRelativeTo(null);
         form.getContentPane().add(getGui());//set size of the frame
@@ -110,39 +112,79 @@ public class View extends JFrame implements ActionListener, KeyListener {
         welkomeText.setForeground(new Color(245, 239, 239));
         welkomeText.setBounds(200, 28, 450, 200);
 
-        JLabel mousecount = new JLabel();
+        mousecount = new JLabel();
         mousecount.setText("mouse activity counter");
         mousecount.setForeground(new Color(191,191,191));
-        mousecount.setBounds(200, 208, 300, 20);
+        mousecount.setBounds(500, 150, 200, 20);
 
         mousecountText = new JTextArea();
-        mousecountText.setBounds(200, 227, 500, 28);
+        mousecountText.setWrapStyleWord(true);
+        mousecountText.setBounds(500, 200, 200, 300);
+
+
+        scrollPaneMouse = new JScrollPane(mousecountText);
+        scrollPaneMouse.setPreferredSize(new Dimension(100, 300));
         mousecountText.setEditable(false);
 
-        JLabel keyboardcount = new JLabel();
+
+        //keylistner label en area
+        keyboardcount = new JLabel();
         keyboardcount.setText("Keyboard activity counter");
         keyboardcount.setForeground(new Color(191,191,191));
-        keyboardcount.setBounds(200, 255, 300, 20);
+        keyboardcount.setBounds(200, 150, 200, 20);
 
         keyboardcountText = new JTextArea();
-        keyboardcountText.setBounds(200, 275, 500, 28);
+        keyboardcountText.setWrapStyleWord(true);
+        keyboardcountText.setBounds(200, 200, 200, 300);
+
         keyboardcountText.setEditable(false);
+        scrollPaneKey = new JScrollPane(keyboardcountText);
+        scrollPaneKey.setPreferredSize(new Dimension(100, 300));
+
+
+        //add counter fields
+        keycounttext = new JLabel();
+        keycounttext.setText("counter");
+        keycounttext.setForeground(new Color(191,191,191));
+        keycounttext.setBounds(200, 500, 200, 20);
+        keycount = new JTextField(15);
+        keycount.setBounds(200, 550, 200, 28);
+
+        //add mouse counter fields
+        mousecounttextfield = new JLabel();
+        mousecounttextfield.setText("counter");
+        mousecounttextfield.setForeground(new Color(191,191,191));
+        mousecounttextfield.setBounds(400, 450, 200, 20);
+        mousecountfield = new JTextField(15);
+        mousecountfield.setBounds(400, 500, 200, 28);
 
         monitoringPanel = new JPanel();
-        monitoringPanel.setLayout(null);
+        monitoringPanel.setLayout(new GridLayout(4,3,20,20));
         monitoringPanel.add(welkomeText);
         monitoringPanel.setBackground(new Color(40, 31, 107));
+        //mouse label
         monitoringPanel.add(mousecount);
-        monitoringPanel.add(mousecountText);
+        //mouse textarea
+        //monitoringPanel.add(mousecountText);
+        //mousescrollpane
+        monitoringPanel.add(scrollPaneMouse,BorderLayout.WEST);
+
+        //keuboard label
         monitoringPanel.add(keyboardcount);
-        monitoringPanel.add(keyboardcountText);
+        //keyboard textarea
+        //monitoringPanel.add(keyboardcountText);
+        //keyboardscrollpane
+        monitoringPanel.add(scrollPaneKey,BorderLayout.WEST);
 
-        add(monitoringPanel, BorderLayout.CENTER);
-        mousecountText.addKeyListener(this);
+        monitoringPanel.add(keycount);
+
+        //mousecountText.addKeyListener(this);
         keyboardcountText.addKeyListener(this);
+        keycount.addKeyListener(this);
 
+        pack();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(800, 800);
         setTitle("Provincie Zuid-Holland Werk Monitor scherm 2");
         setLocationRelativeTo(null);
         getContentPane().add(monitoringPanel);
@@ -165,7 +207,7 @@ public class View extends JFrame implements ActionListener, KeyListener {
         add(closePanel, BorderLayout.CENTER);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(800, 800);
         setTitle("Provincie Zuid-Holland Werk Monitor scherm 3");
         setLocationRelativeTo(null);
         add(closePanel);
@@ -188,7 +230,7 @@ public class View extends JFrame implements ActionListener, KeyListener {
         closePanel.setBackground(new Color(40, 31, 107));
         add(closePanel, BorderLayout.CENTER);
 
-        formwroncred.setSize(800, 600);
+        formwroncred.setSize(800, 800);
         formwroncred.setTitle("Provincie Zuid-Holland Werk Monitor scherm 4");
         formwroncred.setLocationRelativeTo(null);
         //getContentPane().add(getWrongCredGui());
@@ -207,7 +249,7 @@ public class View extends JFrame implements ActionListener, KeyListener {
             try {
                 //call the database and check the input
                 User insert = new User();
-                //check if userna already in db
+                //check if username already in db
                 if (userValue.equals(insert.getUserData(userValue))) {  //if authentic, navigate user to a new page
                     //create instance of the monitoring page
                     monitoringFrame();
@@ -238,6 +280,8 @@ public class View extends JFrame implements ActionListener, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         displayInfo(e, "KEY PRESSED: ");
+         count++;
+         keycount.setText("Totaal:"+ count);
     }
 
     @Override
@@ -253,14 +297,15 @@ public class View extends JFrame implements ActionListener, KeyListener {
      * afterward won't show up in the text area.)
      */
     private void displayInfo(KeyEvent e, String keyStatus){
-
         //You should only rely on the key char if the event
         //is a key typed event.
         int id = e.getID();
         String keyString;
+
         if (id == KeyEvent.KEY_TYPED) {
             char c = e.getKeyChar();
             keyString = "key character = '" + c + "'";
+
         } else {
             int keyCode = e.getKeyCode();
             keyString = "key code = " + keyCode
