@@ -1,7 +1,8 @@
 package org.monitor.model;
 
-import org.monitor.Monitor;
+import org.monitor.Main;
 
+import javax.management.monitor.Monitor;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
@@ -14,20 +15,20 @@ public class DBConnection {
 
     static {
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%4$-7s] %5$s %n");
-        log =Logger.getLogger(Monitor.class.getName());
+        log =Logger.getLogger(Main.class.getName());
     }
 
     DBConnection() throws IOException, SQLException {
         log.info("Loading application properties");
         Properties properties = new Properties();
-        properties.load(Monitor.class.getClassLoader().getResourceAsStream("application.properties"));
+        properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
 
         log.info("Connecting to the database");
         Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties);
         log.info("Database connection test: " + connection.getCatalog());
 
         log.info("Create display results");
-        Scanner scanner = new Scanner(Monitor.class.getClassLoader().getResourceAsStream("./querys/select_all.sql"));
+        Scanner scanner = new Scanner(Main.class.getClassLoader().getResourceAsStream("./querys/select_all.sql"));
         Statement statement = connection.createStatement();
 
         while (scanner.hasNextLine()) {

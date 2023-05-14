@@ -2,25 +2,20 @@ package org.monitor;
 import org.monitor.model.User;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.ArrayList;
+import java.awt.event.*;
 import java.util.logging.Logger;
 
-public class View extends JFrame implements ActionListener, KeyListener {
+public class View extends JFrame implements ActionListener, KeyListener, MouseListener {
 
     private int score;
-    private JLabel username, password,welkomeText,keyboardcount,mousecount,keycounttext,mousecounttextfield;
-    private JTextField usernameText, keycount,mousecountfield;
+    private JLabel username, password, welkomeText,keyboardcount,mousecount,keycounttext,mousecounttextfield;
+    private JTextField usernameText, keycount,mouseactionfield;
     private JTextArea mousecountText,keyboardcountText;
     private JPasswordField passwordText;
     private JButton login,exit;
-    private JPanel loginPanel, wrongcredPanel,monitoringPanel,closePanel;
+    private JPanel loginPanel, monitoringBorderPanel,monitoringGridPanel,closePanel;
     private static final Logger log;
-    private boolean monitoring;
-    private int[] telArray;
+
     private JScrollPane scrollPaneKey,scrollPaneMouse;
     static final String newline = System.getProperty("line.separator");
 
@@ -28,7 +23,7 @@ public class View extends JFrame implements ActionListener, KeyListener {
 
     static {
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%4$-7s] %5$s %n");
-        log = Logger.getLogger(Monitor.class.getName());
+        log = Logger.getLogger(Main.class.getName());
     }
     private ImageIcon logo = new ImageIcon("/home/linuxpc/Documents/studie/Programmeren/Les1&2/work_productivity_monitor/src/main/resources/images/logo_small.png");
     public View(){
@@ -42,6 +37,7 @@ public class View extends JFrame implements ActionListener, KeyListener {
         welkomeText.setFont(new Font("Arial", Font.BOLD, 20));
         welkomeText.setForeground(new Color(245, 239, 239));
         welkomeText.setBounds(200, 28, 450, 200);
+
 
         username = new JLabel();
         username.setText("Gebruikersnaam");
@@ -95,7 +91,7 @@ public class View extends JFrame implements ActionListener, KeyListener {
         return loginPanel;
     }
     public void loginFrame() {
-        Monitor form = new Monitor();
+        Main form = new Main();
         form.setDefaultCloseOperation(EXIT_ON_CLOSE);
         form.setSize(800, 800);
         form.setTitle("Provincie Zuid-Holland Werk Monitor scherm 1");
@@ -110,7 +106,7 @@ public class View extends JFrame implements ActionListener, KeyListener {
         welkomeText.setText(logintext);
         welkomeText.setFont(new Font("Arial", Font.BOLD, 20));
         welkomeText.setForeground(new Color(245, 239, 239));
-        welkomeText.setBounds(200, 28, 450, 200);
+//        welkomeText.setBounds(200, 28, 450, 200);
 
         mousecount = new JLabel();
         mousecount.setText("mouse activity counter");
@@ -120,7 +116,6 @@ public class View extends JFrame implements ActionListener, KeyListener {
         mousecountText = new JTextArea();
         mousecountText.setWrapStyleWord(true);
         mousecountText.setBounds(500, 200, 200, 300);
-
 
         scrollPaneMouse = new JScrollPane(mousecountText);
         scrollPaneMouse.setPreferredSize(new Dimension(100, 300));
@@ -152,33 +147,39 @@ public class View extends JFrame implements ActionListener, KeyListener {
 
         //add mouse counter fields
         mousecounttextfield = new JLabel();
-        mousecounttextfield.setText("counter");
+        mousecounttextfield.setText("Mouse counter");
         mousecounttextfield.setForeground(new Color(191,191,191));
         mousecounttextfield.setBounds(400, 450, 200, 20);
-        mousecountfield = new JTextField(15);
-        mousecountfield.setBounds(400, 500, 200, 28);
+        mouseactionfield = new JTextField(15);
+        mouseactionfield.setBounds(400, 500, 200, 28);
 
-        monitoringPanel = new JPanel();
-        monitoringPanel.setLayout(new GridLayout(4,3,20,20));
-        monitoringPanel.add(welkomeText);
-        monitoringPanel.setBackground(new Color(40, 31, 107));
+        monitoringBorderPanel = new JPanel();
+        monitoringBorderPanel.setLayout(new BorderLayout());
+        monitoringBorderPanel.add(welkomeText,BorderLayout.NORTH);
+        monitoringBorderPanel.setBackground(new Color(40, 31, 107));
         //mouse label
-        monitoringPanel.add(mousecount);
+
+        JButton WestButton = new JButton("West");
+        monitoringBorderPanel.add(WestButton, BorderLayout.WEST);
+        JButton EastButton = new JButton("EAst");
+        monitoringBorderPanel.add(EastButton, BorderLayout.EAST);
+
         //mouse textarea
         //monitoringPanel.add(mousecountText);
+        monitoringGridPanel = new JPanel(new GridLayout(4,2));
+
         //mousescrollpane
-        monitoringPanel.add(scrollPaneMouse,BorderLayout.WEST);
+        monitoringGridPanel.add(mousecount);
+        monitoringGridPanel.add(keyboardcount);
+        monitoringGridPanel.add(scrollPaneMouse);
+        monitoringGridPanel.add(scrollPaneKey);
+        monitoringGridPanel.add(mouseactionfield);
+        monitoringGridPanel.add(keycount);
 
-        //keuboard label
-        monitoringPanel.add(keyboardcount);
-        //keyboard textarea
-        //monitoringPanel.add(keyboardcountText);
-        //keyboardscrollpane
-        monitoringPanel.add(scrollPaneKey,BorderLayout.WEST);
+        monitoringBorderPanel.add(monitoringGridPanel,BorderLayout.CENTER);
 
-        monitoringPanel.add(keycount);
-
-        //mousecountText.addKeyListener(this);
+        mousecountText.addMouseListener(this);
+        mouseactionfield.addMouseListener(this);
         keyboardcountText.addKeyListener(this);
         keycount.addKeyListener(this);
 
@@ -187,7 +188,7 @@ public class View extends JFrame implements ActionListener, KeyListener {
         setSize(800, 800);
         setTitle("Provincie Zuid-Holland Werk Monitor scherm 2");
         setLocationRelativeTo(null);
-        getContentPane().add(monitoringPanel);
+        getContentPane().add(monitoringBorderPanel);
         setIconImage(logo.getImage());
         setVisible(true);
     }
@@ -216,7 +217,7 @@ public class View extends JFrame implements ActionListener, KeyListener {
     }
 
     public void wrongCredentialsFrame(){
-        Monitor formwroncred = new Monitor();
+        Main formwroncred = new Main();
         welkomeText = new JLabel();
         String logintext = "<html><p>Vul aub de correcte gegevens in. Neem anders contact op met de database admin</p></html>";
         welkomeText.setText(logintext);
@@ -352,4 +353,37 @@ public class View extends JFrame implements ActionListener, KeyListener {
         keyboardcountText.setCaretPosition(keyboardcountText.getDocument().getLength());
     }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        displayMouseInfo("Mouse clicked; # of clicks: "+ e.getClickCount());
+        mouseactionfield.setText("total clicks"+e.getClickCount());
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        displayMouseInfo("Mouse pressed; # of clicks: "
+                + e.getClickCount());
+
+        mouseactionfield.setText("total clicks"+e.getClickCount());
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+       displayMouseInfo("Mouse moved"+ e.getClickCount());
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    displayMouseInfo("Mouse exited"+ e.getClickCount());
+    }
+
+    private void displayMouseInfo(String eventDescription){
+
+        mousecountText.append(eventDescription+ "." + newline);
+    }
 }

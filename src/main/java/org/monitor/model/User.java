@@ -1,6 +1,6 @@
 package org.monitor.model;
 
-import org.monitor.Monitor;
+import org.monitor.Main;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -78,7 +78,7 @@ public class User extends JFrame {
         log.info("Insert data");
         //create the connection to the db
         Properties properties = new Properties();
-        properties.load(Monitor.class.getClassLoader().getResourceAsStream("application.properties"));
+        properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
         connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
         preparedStatement = connection.prepareStatement("INSERT INTO [dbo].[users](id,username,password,registred) VALUES (?, ?, ?, ?);");
@@ -101,7 +101,7 @@ public class User extends JFrame {
     public String getUserData(String email)throws SQLException,IOException {
 
         Properties properties = new Properties();
-        properties.load(Monitor.class.getClassLoader().getResourceAsStream("application.properties"));
+        properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
         connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
         preparedStatement = connection.prepareStatement("SELECT * FROM [dbo].[users] WHERE [username] LIKE ?");
