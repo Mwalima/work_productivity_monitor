@@ -92,21 +92,23 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
     }
     public void loginFrame() {
         Main form = new Main();
-        form.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        form.setSize(800, 800);
-        form.setTitle("Provincie Zuid-Holland Werk Monitor scherm 1");
+        form.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        form.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        form.setTitle("Provincie Zuid-Holland Werk Monitor scherm");
         form.setLocationRelativeTo(null);
         form.getContentPane().add(getGui());//set size of the frame
         form.setIconImage(logo.getImage());
         form.setVisible(true);
+
     }
     public void monitoringFrame(){
         welkomeText = new JLabel();
-        String logintext = "<html><p>En nu als de wiedeweerga aan de slag!</p></html>";
+        String logintext = "<html><h1>Proceed with the test</h1></html>";
         welkomeText.setText(logintext);
         welkomeText.setFont(new Font("Arial", Font.BOLD, 20));
         welkomeText.setForeground(new Color(245, 239, 239));
-//        welkomeText.setBounds(200, 28, 450, 200);
+        welkomeText.setBounds(200, 28, 450, 200);
+        welkomeText.setHorizontalTextPosition(SwingConstants.LEFT);
 
         mousecount = new JLabel();
         mousecount.setText("mouse activity counter");
@@ -120,8 +122,6 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
         scrollPaneMouse = new JScrollPane(mousecountText);
         scrollPaneMouse.setPreferredSize(new Dimension(100, 300));
         mousecountText.setEditable(false);
-
-
         //keylistner label en area
         keyboardcount = new JLabel();
         keyboardcount.setText("Keyboard activity counter");
@@ -135,7 +135,6 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
         keyboardcountText.setEditable(false);
         scrollPaneKey = new JScrollPane(keyboardcountText);
         scrollPaneKey.setPreferredSize(new Dimension(100, 300));
-
 
         //add counter fields
         keycounttext = new JLabel();
@@ -159,15 +158,13 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
         monitoringBorderPanel.setBackground(new Color(40, 31, 107));
         //mouse label
 
-        JButton WestButton = new JButton("West");
+        JButton WestButton = new JButton();
         monitoringBorderPanel.add(WestButton, BorderLayout.WEST);
         JButton EastButton = new JButton("EAst");
         monitoringBorderPanel.add(EastButton, BorderLayout.EAST);
-
         //mouse textarea
         //monitoringPanel.add(mousecountText);
         monitoringGridPanel = new JPanel(new GridLayout(4,2));
-
         //mousescrollpane
         monitoringGridPanel.add(mousecount);
         monitoringGridPanel.add(keyboardcount);
@@ -185,7 +182,7 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
 
         pack();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800, 800);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setTitle("Provincie Zuid-Holland Werk Monitor scherm 2");
         setLocationRelativeTo(null);
         getContentPane().add(monitoringBorderPanel);
@@ -208,7 +205,7 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
         add(closePanel, BorderLayout.CENTER);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(800, 800);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setTitle("Provincie Zuid-Holland Werk Monitor scherm 3");
         setLocationRelativeTo(null);
         add(closePanel);
@@ -253,6 +250,7 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
                 //check if username already in db
                 if (userValue.equals(insert.getUserData(userValue))) {  //if authentic, navigate user to a new page
                     //create instance of the monitoring page
+                    dispose();
                     monitoringFrame();
 
                 } else {
@@ -356,7 +354,8 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
     @Override
     public void mouseClicked(MouseEvent e) {
         displayMouseInfo("Mouse clicked; # of clicks: "+ e.getClickCount());
-        mouseactionfield.setText("total clicks"+e.getClickCount());
+        count++;
+        mouseactionfield.setText("total clicks"+count);
     }
 
     @Override
@@ -369,7 +368,6 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
     }
 
     @Override
