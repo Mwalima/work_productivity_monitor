@@ -8,14 +8,11 @@
     // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
     // then press Enter. You can now see whitespace characters in your code.
     public class Main extends JFrame {
-                //User user;
-
-
-        public static void main(String[] args) throws SQLException, IOException {
+        public static void main(String[] args) {
             try
             {
-                View view = new View();
-                view.loginFrame();
+                var view = new View();
+                view.gameFrame(view.registrationPanel());
             }
             catch(Exception e)
             {

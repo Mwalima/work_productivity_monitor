@@ -1,5 +1,6 @@
 package org.monitor.model;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import org.monitor.Main;
 import java.io.IOException;
 import java.sql.*;
@@ -19,7 +20,7 @@ public class User extends JFrame {
         private boolean registred;
         public Connection connection;
 
-        public PreparedStatement preparedStatement;
+        public PreparedStatement stment;
 
         public User(){
             //            Dotenv dotenv = Dotenv.load();
@@ -81,12 +82,12 @@ public class User extends JFrame {
         properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
         connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
-        preparedStatement = connection.prepareStatement("INSERT INTO [dbo].[users](id,username,password,registred) VALUES (?, ?, ?, ?);");
-        preparedStatement.setInt(1, this.getId());
-        preparedStatement.setString(2, this.getUsername());
-        preparedStatement.setString(3, this.getPassword());
-        preparedStatement.setBoolean(4, this.isRegistred());
-        preparedStatement.executeUpdate();
+            stment = connection.prepareStatement("INSERT INTO [dbo].[users](id,username,password,registred) VALUES (?, ?, ?, ?);");
+            stment.setInt(1, this.getId());
+            stment.setString(2, this.getUsername());
+            stment.setString(3, this.getPassword());
+            stment.setBoolean(4, this.isRegistred());
+            stment.executeUpdate();
     }
 
     /**
@@ -99,32 +100,32 @@ public class User extends JFrame {
      */
 
     public String getUserData(String email)throws SQLException,IOException {
-
         Properties properties = new Properties();
         properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
+        String usernameValue = null;
         connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
-        preparedStatement = connection.prepareStatement("SELECT * FROM [dbo].[users] WHERE [username] LIKE ?");
-        preparedStatement.setString(1, "%" + email + "%");
-        ResultSet resultSet = preparedStatement.executeQuery();
 
-        String usernameValue = " ";
+        try (PreparedStatement pstatement = connection.prepareStatement("SELECT * FROM [dbo].[users] WHERE [username] LIKE ?");){
 
-        /*
-        TODO Create good redirect if user add wrong credentials
-         */
-//        if (!resultSet.isBeforeFirst()) {
-//            System.out.println("No data");
-//            View view = new View();
-//            view.wrongCredentialsFrame();
-//        } else {
+            pstatement.setString(1, "%" + email + "%");
+            ResultSet resultSet = pstatement.executeQuery();
+
             while (resultSet.next()) {
                 usernameValue = resultSet.getString("username");
+                System.out.println(resultSet.getString("username") + " " + resultSet.getString("password"));
                 //String passwordValue = resultSet.getString("password");
             }
-            return usernameValue;
-//       }
-//       return usernameValue;
+        } catch (SQLServerException se) {
+            do {
+                System.out.println("SQL STATE: " + se.getSQLState());
+                System.out.println("ERROR CODE: " + se.getErrorCode());
+                System.out.println("MESSAGE: " + se.getMessage());
+                System.out.println();
+            }
+            while (se != null);
+            return null;
+        }
+        return usernameValue;
     }
-
 }
