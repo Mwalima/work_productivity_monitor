@@ -1,5 +1,7 @@
     package org.monitor;
 
+    import org.monitor.model.User;
+
     import javax.swing.*;
     import java.io.IOException;
     import java.sql.*;
