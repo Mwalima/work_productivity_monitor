@@ -1,12 +1,13 @@
 package org.monitor;
 
 import org.monitor.model.User;
+import org.monitor.view.ClosingView;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
-import java.sql.SQLException;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,7 +18,7 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
 
     static {
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%4$-7s] %5$s %n");
-        log = Logger.getLogger(Main.class.getName());
+        log = Logger.getLogger(View.class.getName());
     }
 
     public int count = 0;
@@ -26,16 +27,16 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
     private JLabel username, password, welkomeText, keyboardcount, mousecount, keycounttext, mousecounttextfield, firstnamelabel, lastnamelabel, streetnamelabel, housenumberlabel, phonelabel, citylabel, countrylabel, postalcodelabel, emailregistrationlabel, passwordregistrationLabel;
     private JTextField usernameText, keycount, mouseactionfield, emailregistrationtext, passwordregistrationText, firstnametext, laststnametext, streetnametext, housenumbertext, postalcodetext, phonetext, citytext, countrytext;
     private JTextArea mousecountText, keyboardcountText;
-    private JPasswordField passwordText;
     private JButton loginbutton, exitbutton, returnbutton, registerbutton, inlogbutton;
-    private JPanel loginPanel, registrationPanel, monitoringBorderPanel, monitoringGridPanel, closePanel, wroncredentialspanel;
+    private JPanel monitoringGridPanel;
+    private JPanel closePanel;
+    private JPanel wroncredentialspanel;
     private JScrollPane scrollPaneKey, scrollPaneMouse;
-    private ImageIcon logo = new ImageIcon("/home/linuxpc/Documents/studie/Programmeren/Les1&2/work_productivity_monitor/src/main/resources/images/logo_small.png");
+    private final ImageIcon logo = new ImageIcon("./resources/images/logo_small.png");
 
     public View() {
         loginPanel();
         monitoringPanel();
-        closePanel();
         wrongCredentialsPanel();
     }
 
@@ -156,7 +157,7 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
         inlogbutton.setBackground(new Color(209, 31, 61));
         inlogbutton.setForeground(Color.WHITE);
 
-        registrationPanel = new JPanel();
+        JPanel registrationPanel = new JPanel();
         registrationPanel.setLayout(null);
         registrationPanel.add(welkomeText);
 
@@ -200,7 +201,6 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
 
         return registrationPanel;
     }
-
     public JPanel loginPanel() {
         welkomeText = new JLabel();
         String logintext = "<html><p>Welkom Bij de werk Monitor!\n Login om je werk prestatie bij te houden.</p></html>";
@@ -222,7 +222,7 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
         password.setForeground(new Color(191, 191, 191));
         password.setBounds(200, 255, 170, 20);
 
-        passwordText = new JPasswordField(15);
+        JPasswordField passwordText = new JPasswordField(15);
         passwordText.setBounds(200, 275, 400, 28);
 
         loginbutton = new JButton("Verzenden");
@@ -235,7 +235,7 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
         exitbutton.setBackground(new Color(209, 31, 61));
         exitbutton.setForeground(new Color(191, 191, 191));
 
-        loginPanel = new JPanel();
+        JPanel loginPanel = new JPanel();
         loginPanel.setLayout(null);
         loginPanel.add(welkomeText);
         loginPanel.add(username);
@@ -253,7 +253,6 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
         exitbutton.addActionListener(this);
         return loginPanel;
     }
-
     private JPanel monitoringPanel() {
         welkomeText = new JLabel();
         String logintext = "<html><h1>Proceed with the test</h1></html>";
@@ -305,7 +304,7 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
         mouseactionfield = new JTextField(15);
         mouseactionfield.setBounds(400, 500, 200, 28);
 
-        monitoringBorderPanel = new JPanel();
+        JPanel monitoringBorderPanel = new JPanel();
         monitoringBorderPanel.setLayout(new BorderLayout());
         monitoringBorderPanel.add(welkomeText, BorderLayout.NORTH);
         monitoringBorderPanel.setBackground(new Color(40, 31, 107));
@@ -336,25 +335,7 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
         return monitoringBorderPanel;
     }
 
-    private JPanel closePanel() {
-        //TODO make panel close after 5 sec
-        welkomeText = new JLabel();
-        String logintext = "<html><p>Sluiten van alle voortgang</p></html>";
-        welkomeText.setText(logintext);
-        welkomeText.setFont(new Font("Arial", Font.BOLD, 20));
-        welkomeText.setForeground(new Color(245, 239, 239));
-        welkomeText.setBounds(200, 28, 450, 200);
-
-        closePanel = new JPanel();
-        closePanel.setLayout(null);
-        closePanel.add(welkomeText);
-        closePanel.setBackground(new Color(40, 31, 107));
-        add(closePanel, BorderLayout.CENTER);
-
-        return closePanel;
-    }
-
-    private JPanel wrongCredentialsPanel() {
+   private JPanel wrongCredentialsPanel() {
         welkomeText = new JLabel();
         String logintext = "<html><p>Vul AUB de correcte gegevens in.</p></html>";
         welkomeText.setText(logintext);
@@ -377,11 +358,12 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
         returnbutton.addActionListener(this);
         return wroncredentialspanel;
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         View view = new View();
+        ClosingView closingView = new ClosingView();
         User user = new User();
+
         /*
         TODO  get user entered username from the usernameText
         String passValue = passwordText.getText();
@@ -414,9 +396,7 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
             view.gameFrame(view.loginPanel());
         }
         if (e.getSource() == exitbutton) {
-            //close previouos frame
-            gameFrame(view.loginPanel()).dispose();
-            view.gameFrame(view.closePanel());
+            view.gameFrame(closingView.closePanel());
         }
         if (e.getSource() == returnbutton) {
             //close previouos frame
@@ -521,10 +501,7 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
 
         } else {
             int keyCode = e.getKeyCode();
-            keyString = "key code = " + keyCode
-                    + " ("
-                    + KeyEvent.getKeyText(keyCode)
-                    + ")";
+            keyString = "key code = " + keyCode + " (" + KeyEvent.getKeyText(keyCode) + ")";
         }
 
         int modifiersEx = e.getModifiersEx();
@@ -557,11 +534,7 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
             locationString += "unknown";
         }
 
-        keyboardcountText.append(keyStatus + newline
-                + "    " + keyString + newline
-                + "    " + modString + newline
-                + "    " + actionString + newline
-                + "    " + locationString + newline);
+        keyboardcountText.append(keyStatus + newline + "    " + keyString + newline + "    " + modString + newline + "    " + actionString + newline + "    " + locationString + newline);
         keyboardcountText.setCaretPosition(keyboardcountText.getDocument().getLength());
     }
 
@@ -574,8 +547,7 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
 
     @Override
     public void mousePressed(MouseEvent e) {
-        displayMouseInfo("Mouse pressed; # of clicks: "
-                + e.getClickCount());
+        displayMouseInfo("Mouse pressed; # of clicks: " + e.getClickCount());
 
         mouseactionfield.setText("total clicks" + e.getClickCount());
     }
