@@ -7,6 +7,7 @@ import org.monitor.view.RegistrationView;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,11 +16,12 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
     static final String newline = System.getProperty("line.separator");
 
     public int count = 0;
-    String userValue;
-    private JLabel username, password, welkomeText, keyboardcount, mousecount, keycounttext, mousecounttextfield, firstnamelabel, lastnamelabel, streetnamelabel, housenumberlabel, phonelabel, citylabel, countrylabel, postalcodelabel, emailregistrationlabel, passwordregistrationLabel;
-    private JTextField usernameText, keycount, mouseactionfield, emailregistrationtext, passwordregistrationText, firstnametext, laststnametext, streetnametext, housenumbertext, postalcodetext, phonetext, citytext, countrytext;
+    String emailValue,passwordValue;
+    private JLabel username, password, welkomeText, keyboardcount, mousecount, keycounttext, mousecounttextfield;
+    private JTextField usernameText, keycount, mouseactionfield;
     private JTextArea mousecountText, keyboardcountText;
-    private JButton loginbutton, exitbutton, returnbutton, registerbutton, inlogbutton;
+    private JButton loginbutton, exitbutton, returnbutton;
+    private JPasswordField passwordText;
     private JPanel monitoringGridPanel;
     private JPanel wroncredentialspanel;
     private JScrollPane scrollPaneKey, scrollPaneMouse;
@@ -74,7 +76,7 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
         password.setForeground(new Color(191, 191, 191));
         password.setBounds(200, 255, 170, 20);
 
-        JPasswordField passwordText = new JPasswordField(15);
+        passwordText = new JPasswordField(15);
         passwordText.setBounds(200, 275, 400, 28);
 
         loginbutton = new JButton("Verzenden");
@@ -223,11 +225,18 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
          */
         if (e.getSource() == loginbutton) {
             try {
-                userValue = usernameText.getText();
-                System.out.println(userValue);
-                System.out.println();
+                emailValue = usernameText.getText();
+                passwordValue = passwordText.getText();
 
-                if (userValue.equals(user.getUserData(userValue))) {
+                //add values to arrylist
+                ArrayList<String>loginvalues = new ArrayList<String>();
+                loginvalues.add(emailValue);
+                loginvalues.add(passwordValue);
+
+                System.out.println(emailValue);
+                System.out.println(passwordValue);
+
+                if (loginvalues.get(0).equals(user.getUserData(emailValue))) {
                     //if authentic, navigate user to a new page
                     gameFrame(view.loginPanel()).dispose();
                     view.gameFrame(view.monitoringPanel());
@@ -244,11 +253,6 @@ public class View extends JFrame implements ActionListener, KeyListener, MouseLi
                 gameFrame(view.loginPanel()).dispose();
                 view.gameFrame(view.wrongCredentialsPanel());
             }
-        }
-        if (e.getSource() == inlogbutton) {
-            //close previouos frame
-            gameFrame(registration.registrationPanel()).dispose();
-            view.gameFrame(view.loginPanel());
         }
         if (e.getSource() == exitbutton) {
             view.gameFrame(closingView.closePanel());

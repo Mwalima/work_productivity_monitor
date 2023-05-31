@@ -185,12 +185,14 @@ public class User extends JFrame {
         Properties properties = new Properties();
         properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
         String emailValue = null;
-        String passwordValue = null;
+        //String passwordValue = null;
         connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
         try (PreparedStatement pstatement = connection.prepareStatement("SELECT * FROM [dbo].[users] WHERE [emailadress] LIKE ?")) {
+            // WHERE [emailadress] LIKE '%leitje%' AND [password] LIKE '%1234%'
 
             pstatement.setString(1, "%" + email + "%");
+            //pstatement.setString(2, "%" + password + "%");
             ResultSet resultSet = pstatement.executeQuery();
 
             while (resultSet.next()) {
