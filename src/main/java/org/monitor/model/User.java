@@ -19,8 +19,8 @@ public class User extends JFrame {
     private static final Logger log = null;
     public Connection connection;
     public PreparedStatement stment;
-    private Integer id,phonenumber;
-    private String firstname, lastname, streetname, postalcode, cityname, country,emailadress,housenumber;
+    private Integer id, phonenumber;
+    private String firstname, lastname, streetname, postalcode, cityname, country, emailadress, housenumber;
     private String password;
     private boolean registred = true;
     private Statement statement;
@@ -122,6 +122,7 @@ public class User extends JFrame {
     public void setEmailadress(String emailadress) {
         this.emailadress = emailadress;
     }
+
     public String getPassword() {
         return password;
     }
@@ -140,12 +141,7 @@ public class User extends JFrame {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + firstname + '\'' +
-                ", password='" + password + '\'' +
-                ", registred=" + registred +
-                '}';
+        return "User{" + "id=" + id + ", username='" + firstname + '\'' + ", password='" + password + '\'' + ", registred=" + registred + '}';
     }
 
     /**
@@ -221,8 +217,7 @@ public class User extends JFrame {
                 System.out.println("ERROR CODE: " + se.getErrorCode());
                 System.out.println("MESSAGE: " + se.getMessage());
                 System.out.println();
-            }
-            while (se != null);
+            } while (se != null);
             return null;
         }
         return usernameValue;
