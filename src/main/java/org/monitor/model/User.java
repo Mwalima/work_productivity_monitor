@@ -16,10 +16,9 @@ import org.monitor.View;
 import javax.swing.*;
 
 public class User extends JFrame {
-    private static final Logger log = null;
     public Connection connection;
     public PreparedStatement stment;
-    private Integer id, phonenumber;
+    private Integer phonenumber;
     private String firstname, lastname, streetname, postalcode, cityname, country, emailadress, housenumber;
     private String password;
     private boolean registred = true;
@@ -41,14 +40,6 @@ public class User extends JFrame {
         this.country = country;
         this.password = password;
         this.registred = registred;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getFirstname() {
@@ -139,10 +130,6 @@ public class User extends JFrame {
         this.registred = registred;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "id=" + id + ", username='" + firstname + '\'' + ", password='" + password + '\'' + ", registred=" + registred + '}';
-    }
 
     /**
      * @throws SQLException
@@ -197,18 +184,18 @@ public class User extends JFrame {
     public String getUserData(String email) throws SQLException, IOException {
         Properties properties = new Properties();
         properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
-        String usernameValue = null;
+        String emailValue = null;
+        String passwordValue = null;
         connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
-
-        try (PreparedStatement pstatement = connection.prepareStatement("SELECT * FROM [dbo].[users] WHERE [firstname] LIKE ?")) {
+        try (PreparedStatement pstatement = connection.prepareStatement("SELECT * FROM [dbo].[users] WHERE [emailadress] LIKE ?")) {
 
             pstatement.setString(1, "%" + email + "%");
             ResultSet resultSet = pstatement.executeQuery();
 
             while (resultSet.next()) {
-                usernameValue = resultSet.getString("firstname");
-                System.out.println(resultSet.getString("firstname") + " " + resultSet.getString("password"));
+                emailValue = resultSet.getString("emailadress");
+                System.out.println(resultSet.getString("emailadress") + " " + resultSet.getString("password"));
                 //String passwordValue = resultSet.getString("password");
             }
         } catch (SQLServerException se) {
@@ -220,6 +207,6 @@ public class User extends JFrame {
             } while (se != null);
             return null;
         }
-        return usernameValue;
+        return emailValue;
     }
 }

@@ -1,6 +1,7 @@
     package org.monitor;
 
     import org.monitor.model.User;
+    import org.monitor.view.RegistrationView;
 
     import javax.swing.*;
     import java.io.IOException;
@@ -13,8 +14,9 @@
         public static void main(String[] args) {
             try
             {
+                var registration = new RegistrationView();
                 var view = new View();
-                view.gameFrame(view.registrationPanel());
+                view.gameFrame(registration.registrationPanel());
             }
             catch(Exception e)
             {
