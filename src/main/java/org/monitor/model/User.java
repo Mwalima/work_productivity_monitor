@@ -181,24 +181,26 @@ public class User extends JFrame {
      * @throws IOException  check if user is already registred
      */
 
-    public String getUserData(String email) throws SQLException, IOException {
+    public Integer getUserData() throws SQLException, IOException {
         Properties properties = new Properties();
         properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
-        String emailValue = null;
-        //String passwordValue = null;
+
+        String emailValue = this.getEmailadress();
+        String passwordValue = this.getPassword();
+        int rowsAffected=0;
+
         connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
-        try (PreparedStatement pstatement = connection.prepareStatement("SELECT * FROM [dbo].[users] WHERE [emailadress] LIKE ?")) {
+        try (PreparedStatement pstatement = connection.prepareStatement("SELECT * FROM [dbo].[users] WHERE [emailadress] LIKE ? AND [password] LIKE ?")) {
             // WHERE [emailadress] LIKE '%leitje%' AND [password] LIKE '%1234%'
 
-            pstatement.setString(1, "%" + email + "%");
-            //pstatement.setString(2, "%" + password + "%");
+            pstatement.setString(1, "%" + emailValue + "%");
+            pstatement.setString(2, "%" + passwordValue + "%");
             ResultSet resultSet = pstatement.executeQuery();
 
             while (resultSet.next()) {
-                emailValue = resultSet.getString("emailadress");
-                System.out.println(resultSet.getString("emailadress") + " " + resultSet.getString("password"));
-                //String passwordValue = resultSet.getString("password");
+                rowsAffected = 1;
+                return rowsAffected;
             }
         } catch (SQLServerException se) {
             do {
@@ -207,8 +209,7 @@ public class User extends JFrame {
                 System.out.println("MESSAGE: " + se.getMessage());
                 System.out.println();
             } while (se != null);
-            return null;
         }
-        return emailValue;
+        return rowsAffected;
     }
 }
