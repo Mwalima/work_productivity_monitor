@@ -1,21 +1,17 @@
 package org.monitor.model;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
+
 import org.monitor.Main;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import io.github.cdimascio.dotenv.Dotenv;
-import org.monitor.View;
-
-import javax.swing.*;
-
 public class User extends JFrame {
+
     private static final Logger log = null;
     public Connection connection;
     public PreparedStatement stment;
@@ -62,6 +58,7 @@ public class User extends JFrame {
     public String getLastname() {
         return lastname;
     }
+
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
@@ -215,10 +212,10 @@ public class User extends JFrame {
                 System.out.println(resultSet.getString("firstname") + " " + resultSet.getString("password"));
                 //String passwordValue = resultSet.getString("password");
             }
-        } catch (SQLServerException se) {
+        } catch (Exception se) {
             do {
-                System.out.println("SQL STATE: " + se.getSQLState());
-                System.out.println("ERROR CODE: " + se.getErrorCode());
+//                System.out.println("SQL STATE: " + se.getSQLState());
+//                System.out.println("ERROR CODE: " + se.getErrorCode());
                 System.out.println("MESSAGE: " + se.getMessage());
                 System.out.println();
             }
