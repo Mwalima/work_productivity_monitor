@@ -32,7 +32,6 @@ public class WrongCredentialsView extends JFrame implements ActionListener {
         returnbutton.setForeground(new Color(191, 191, 191));
         wroncredentialspanel.add(returnbutton);
         add(wroncredentialspanel, BorderLayout.CENTER);
-
         returnbutton.addActionListener(this);
         return wroncredentialspanel;
     }
@@ -40,10 +39,11 @@ public class WrongCredentialsView extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         View view = new View();
+        LoginView lpanel = new LoginView();
         if (e.getSource() == returnbutton) {
             //close previouos frame
             view.gameFrame(wrongCredentialsPanel()).dispose();
-            view.gameFrame(view.loginPanel());
+            view.gameFrame(lpanel.loginPanel());
         }
     }
 }

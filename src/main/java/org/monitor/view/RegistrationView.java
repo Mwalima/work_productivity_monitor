@@ -14,7 +14,7 @@ public class RegistrationView extends JFrame implements ActionListener {
 
     public User user = new User();
     private String userValue, firstname, lastname, streetname, postalcode, cityname, coutryname, emailregistration, passwordregistration, housenumber, phonenumber;
-    private JLabel welkomeText, firstnamelabel, lastnamelabel, streetnamelabel, housenumberlabel, phonelabel, citylabel, countrylabel, postalcodelabel, emailregistrationlabel, passwordregistrationLabel;
+    private JLabel welkomeText, firstnamelabel, lastnamelabel, streetnamelabel, housenumberlabel, phonelabel, citylabel, countrylabel, postalcodelabel, emailregistrationlabel, passwordregistrationLabel,inloglabel;
     private JTextField emailregistrationtext, passwordregistrationText, firstnametext, laststnametext, streetnametext, housenumbertext, postalcodetext, phonetext, citytext, countrytext;
     private JButton registerbutton, inlogbutton;
 
@@ -109,8 +109,16 @@ public class RegistrationView extends JFrame implements ActionListener {
         registerbutton.setBackground(new Color(239, 204, 54));
         registerbutton.setForeground(Color.BLACK);
 
+
+        inloglabel = new JLabel();
+        String HTMLlabelStr = "<html><h1>Of als je al geregistreerd bent. Log in </h1></html>";
+
+        inloglabel.setText(HTMLlabelStr);
+        inloglabel.setForeground(Color.WHITE);
+        inloglabel.setBounds(400, 620, 500, 50);
+
         inlogbutton = new JButton("inloggen");
-        inlogbutton.setBounds(800, 520, 120, 25);
+        inlogbutton.setBounds(600, 670, 120, 25);
         inlogbutton.setBackground(new Color(209, 31, 61));
         inlogbutton.setForeground(Color.WHITE);
 
@@ -149,6 +157,7 @@ public class RegistrationView extends JFrame implements ActionListener {
         registrationPanel.add(passwordregistrationText);
 
         registrationPanel.add(registerbutton);
+        registrationPanel.add(inloglabel);
         registrationPanel.add(inlogbutton);
         registrationPanel.setBackground(new Color(171, 167, 201));
 
@@ -161,12 +170,13 @@ public class RegistrationView extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        LoginView lpanel = new LoginView();
 
         View view = new View();
 
         if (e.getSource() == inlogbutton) {
 
-            view.gameFrame(view.loginPanel());
+            view.gameFrame(lpanel.loginPanel());
         }
 
         if (e.getSource() == registerbutton) {
@@ -179,7 +189,6 @@ public class RegistrationView extends JFrame implements ActionListener {
                     streetname = streetnametext.getText();
                     housenumber = housenumbertext.getText();
                     postalcode = postalcodetext.getText();
-                    System.out.println(phonenumber);
                     phonenumber = phonetext.getText();
                     cityname = citytext.getText();
                     coutryname = countrytext.getText();
@@ -190,7 +199,7 @@ public class RegistrationView extends JFrame implements ActionListener {
                 }
 
                 try {
-                    Pattern emailpattern = Pattern.compile("[a-zA-Z.]+@[a-zA-Z]+.[a-zA-Z]{2,5}");
+                    Pattern emailpattern = Pattern.compile("[a-zA-Z.0-9]+@[a-zA-Z]+.[a-zA-Z]{2,5}");
                     Pattern postalcodepattern = Pattern.compile("[1-9]{1}[0-9]{3}[a-zA-Z]{2}");
                     Pattern housenumberpattern = Pattern.compile("[1-9]{1}[0-9]{0,3}");
                     Pattern phonepattern = Pattern.compile("[0]{1}[0-9]{9}");
@@ -225,7 +234,7 @@ public class RegistrationView extends JFrame implements ActionListener {
                         if (user.insertUser() == 1) {
                             JOptionPane.showMessageDialog(null, "Succesvoll geregistreerd", "Succes", JOptionPane.PLAIN_MESSAGE);
                             view.gameFrame(registrationPanel()).dispose();
-                            view.gameFrame(view.loginPanel());
+                            view.gameFrame(lpanel.loginPanel());
                         }
                     }
 

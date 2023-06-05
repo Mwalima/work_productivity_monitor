@@ -187,6 +187,10 @@ public class User extends JFrame {
 
         String emailValue = this.getEmailadress();
         String passwordValue = this.getPassword();
+
+        System.out.println(emailValue);
+        System.out.println(passwordValue);
+
         int rowsAffected=0;
 
         connection = DriverManager.getConnection(properties.getProperty("url"), properties);
