@@ -3,6 +3,7 @@ package org.monitor.view;
 import org.monitor.helper.Stopwatch;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -16,6 +17,8 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
     private JTextArea mousecountText, keyboardcountText, test_text_input_field, test_textfield;
     private JPanel monitoringGridPanel, testGridPanel;
     private JScrollPane scrollPaneKey, scrollPaneMouse;
+
+    private Border raisedbevel;
 
     static final String newline = System.getProperty("line.separator");
 
@@ -77,10 +80,10 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         JPanel monitoringBorderPanel = new JPanel();
         monitoringBorderPanel.setLayout(new BorderLayout());
         monitoringBorderPanel.add(welkomeText, BorderLayout.NORTH);
-        monitoringBorderPanel.setBackground(new Color(40, 31, 107));
+        monitoringBorderPanel.setBackground(new Color(171, 167, 201));
 
         //test tekst area
-        test_textfield = new JTextArea("De test gaat om het zo snel en foutloos na typen van de tekst." + "Veel vlaggen, liederen waarin Catalonië en Spanje („puta, puta”)" + "de hoofdrol spelen en meer dan genoeg bier om de warmte te trotseren. " + "De fans van Barcelona hebben aan het begin van de zaterdagmiddag hun stek " + "in het centrum van Eindhoven wel gevonden: voor de deur van " + "het hotel waarvandaan het team straks naar het Philips-stadion vertrekt. " + "Af en toe moeten de honderden supporters even inschikken om de stadsbus van lijn elf te laten passeren." + "" + "„Een mooi feest”, zeggen Mirreia en Marcos uit Barcelona. Ze volgen de favoriet " + "voor de finale van de Champions League al jaren. " + "Op het mannenvoetbal is het stel een beetje uitgekeken. „In de vrouwencompetitie kan " + "je voor 20 euro een kaartje krijgen, bij de mannen " + "is dat zeker het dubbele”, zegt Marcos. „En nooit zijn er problemen, dat telt voor ons ook.”" + "Vorig jaar was het stel nog in Turijn, waar Barcelona de beker aan Olympique Lyonnais moest laten." + "Tegen VFL Wolfsburg hopen ze op meer succes. „Maar dit is sowieso een mooie dag”, zegt Mirreia, „bij de vrouwen " + "zien we veel meer voetbal en minder agressie en theater op het veld”.");
+        test_textfield = new JTextArea("De test gaat om het zo snel en foutloos na typen van de tekst.\n\n" + "Veel vlaggen, liederen waarin Catalonië en Spanje („puta, puta”)" + "de hoofdrol spelen en meer dan genoeg bier om de warmte te trotseren. " + "De fans van Barcelona hebben aan het begin van de zaterdagmiddag hun stek " + "in het centrum van Eindhoven wel gevonden: voor de deur van " + "het hotel waarvandaan het team straks naar het Philips-stadion vertrekt. " + "Af en toe moeten de honderden supporters even inschikken om de stadsbus van lijn elf te laten passeren." + "" + "„Een mooi feest”, zeggen Mirreia en Marcos uit Barcelona. Ze volgen de favoriet " + "voor de finale van de Champions League al jaren. " + "Op het mannenvoetbal is het stel een beetje uitgekeken. „In de vrouwencompetitie kan " + "je voor 20 euro een kaartje krijgen, bij de mannen " + "is dat zeker het dubbele”, zegt Marcos. „En nooit zijn er problemen, dat telt voor ons ook.”" + "Vorig jaar was het stel nog in Turijn, waar Barcelona de beker aan Olympique Lyonnais moest laten." + "Tegen VFL Wolfsburg hopen ze op meer succes. „Maar dit is sowieso een mooie dag”, zegt Mirreia, „bij de vrouwen " + "zien we veel meer voetbal en minder agressie en theater op het veld”.");
         test_textfield.setWrapStyleWord(true);
         test_textfield.setColumns(10);
         test_textfield.setRows(5);
@@ -98,22 +101,10 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         JScrollPane scrollPaneInput = new JScrollPane(test_text_input_field);
         scrollPaneInput.setPreferredSize(new Dimension(100, 300));
 
-//        JButton WestButton = new JButton();
-//        monitoringBorderPanel.add(WestButton, BorderLayout.WEST);
-//        WestButton.setSize(new Dimension(100,400));
-//        JButton EastButton = new JButton();
-//        EastButton.setSize(new Dimension(100,400));
-//        monitoringBorderPanel.add(EastButton, BorderLayout.EAST);
-
-
-        //mouse textarea
-        //monitoringPanel.add(mousecountText);
         monitoringGridPanel = new JPanel(new GridLayout(4, 2));
         //add test area to jframe
         testGridPanel = new JPanel(new GridLayout(2, 1));
 
-//        JPanel testBorderPanel = new JPanel();
-//        testBorderPanel.setLayout(new BorderLayout());
 
         //mousescrollpane
         monitoringGridPanel.add(mousecount);
@@ -122,6 +113,11 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         monitoringGridPanel.add(scrollPaneKey);
         monitoringGridPanel.add(mouseactionfield);
         monitoringGridPanel.add(keycount);
+
+        //set border
+        raisedbevel = BorderFactory.createMatteBorder(10, 30, 30, 30, new Color(171, 167, 201));
+
+        monitoringBorderPanel.setBorder(raisedbevel);
 
         testGridPanel.add(scrollPane_test);
         testGridPanel.add(scrollPaneInput);
