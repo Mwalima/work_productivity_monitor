@@ -8,15 +8,16 @@ import java.awt.*;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
-import java.util.logging.Logger;
 
+/**
+ * For more information go to https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc/12.2.0.jre11
+ */
 public class User extends JFrame {
 
-    private static final Logger log = null;
     public Connection connection;
     public PreparedStatement stment;
-    private Integer id,phonenumber;
-    private String firstname, lastname, streetname, postalcode, cityname, country,emailadress,housenumber;
+    private Integer phonenumber;
+    private String firstname, lastname, streetname, postalcode, cityname, country, emailadress, housenumber;
     private String password;
     private boolean registred = true;
     private Statement statement;
@@ -37,14 +38,6 @@ public class User extends JFrame {
         this.country = country;
         this.password = password;
         this.registred = registred;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getFirstname() {
@@ -119,6 +112,7 @@ public class User extends JFrame {
     public void setEmailadress(String emailadress) {
         this.emailadress = emailadress;
     }
+
     public String getPassword() {
         return password;
     }
@@ -135,15 +129,6 @@ public class User extends JFrame {
         this.registred = registred;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + firstname + '\'' +
-                ", password='" + password + '\'' +
-                ", registred=" + registred +
-                '}';
-    }
 
     /**
      * @throws SQLException
@@ -195,22 +180,30 @@ public class User extends JFrame {
      * @throws IOException  check if user is already registred
      */
 
-    public String getUserData(String email) throws SQLException, IOException {
+    public Integer getUserData() throws SQLException, IOException {
         Properties properties = new Properties();
         properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
-        String usernameValue = null;
+
+        String emailValue = this.getEmailadress();
+        String passwordValue = this.getPassword();
+
+        System.out.println(emailValue);
+        System.out.println(passwordValue);
+
+        int rowsAffected = 0;
+
         connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
+        try (PreparedStatement pstatement = connection.prepareStatement("SELECT * FROM [dbo].[users] WHERE [emailadress] LIKE ? AND [password] LIKE ?")) {
+            // WHERE [emailadress] LIKE '%leitje%' AND [password] LIKE '%1234%'
 
-        try (PreparedStatement pstatement = connection.prepareStatement("SELECT * FROM [dbo].[users] WHERE [firstname] LIKE ?")) {
-
-            pstatement.setString(1, "%" + email + "%");
+            pstatement.setString(1, "%" + emailValue + "%");
+            pstatement.setString(2, "%" + passwordValue + "%");
             ResultSet resultSet = pstatement.executeQuery();
 
             while (resultSet.next()) {
-                usernameValue = resultSet.getString("firstname");
-                System.out.println(resultSet.getString("firstname") + " " + resultSet.getString("password"));
-                //String passwordValue = resultSet.getString("password");
+                rowsAffected = 1;
+                return rowsAffected;
             }
         } catch (Exception se) {
             do {
@@ -218,10 +211,8 @@ public class User extends JFrame {
 //                System.out.println("ERROR CODE: " + se.getErrorCode());
                 System.out.println("MESSAGE: " + se.getMessage());
                 System.out.println();
-            }
-            while (se != null);
-            return null;
+            } while (se != null);
         }
-        return usernameValue;
+        return rowsAffected;
     }
 }
