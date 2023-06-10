@@ -2,19 +2,15 @@ package org.monitor.model;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import org.monitor.Main;
-
+import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Properties;
-import java.util.logging.Logger;
 
-import io.github.cdimascio.dotenv.Dotenv;
-import org.monitor.View;
-
-import javax.swing.*;
-
+/**
+ * For more information go to https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc/12.2.0.jre11
+ */
 public class User extends JFrame {
     public Connection connection;
     public PreparedStatement stment;

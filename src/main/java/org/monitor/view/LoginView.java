@@ -91,20 +91,31 @@ public class LoginView extends JFrame implements ActionListener {
 
                 if (user.getUserData() == 1) {
                     //if authentic, navigate user to a new page
-                    view.gameFrame(loginPanel()).dispose();
+                    var test = new JFrame();
+                    test.setVisible(false);
+                    test.dispose();
                     view.gameFrame(monitorView.monitoringPanel());
                 } else {
                     //close previouos frame
-                    view.gameFrame(loginPanel()).dispose();
+//                    view.gameFrame(loginPanel()).dispose();
+                    var test = new JFrame();
+                    test.setVisible(false);
+                    test.dispose();
                     view.gameFrame(wrongcredentials.wrongCredentialsPanel());
                 }
             } catch (Exception ea) {
-                //close previouos frame
-                view.gameFrame(loginPanel()).dispose();
+                //close previous frame
+                var test = new JFrame();
+                test.setVisible(false);
+                test.dispose();
+
                 view.gameFrame(wrongcredentials.wrongCredentialsPanel());
             }
         }
         if (e.getSource() == exitbutton) {
+            var test = new JFrame();
+            test.setVisible(false);
+            test.dispose();
             view.gameFrame(closingView.closePanel());
         }
     }

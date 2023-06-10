@@ -1,10 +1,13 @@
 package org.monitor;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class View extends JFrame {
 
-    private final ImageIcon logo = new ImageIcon("./resources/images/logo_small.png");
+    private final ImageIcon icon = new ImageIcon("./resources/images/logo_small.png");
+
+
 
     /**
      * guid of the start screen called loginframe
@@ -17,12 +20,15 @@ public class View extends JFrame {
 
     public JFrame gameFrame(JPanel panel) {
         Main form = new Main();
+        Image image = icon.getImage();
+
+        form.setIconImage(image);
         form.setDefaultCloseOperation(EXIT_ON_CLOSE);
         form.setExtendedState(JFrame.MAXIMIZED_BOTH);
         form.setTitle("Provincie Zuid-Holland Werk Monitor scherm");
         form.setLocationRelativeTo(null);
+        form.setIconImage(icon.getImage());
         form.getContentPane().add(getGui(panel));//set size of the frame
-        form.setIconImage(logo.getImage());
         form.setVisible(true);
         return form;
     }

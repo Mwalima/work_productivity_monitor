@@ -171,10 +171,12 @@ public class RegistrationView extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         LoginView lpanel = new LoginView();
-
         View view = new View();
 
         if (e.getSource() == inlogbutton) {
+            var test = new JFrame();
+            test.setVisible(false);
+            test.dispose();
 
             view.gameFrame(lpanel.loginPanel());
         }
@@ -233,7 +235,10 @@ public class RegistrationView extends JFrame implements ActionListener {
 
                         if (user.insertUser() == 1) {
                             JOptionPane.showMessageDialog(null, "Succesvoll geregistreerd", "Succes", JOptionPane.PLAIN_MESSAGE);
-                            view.gameFrame(registrationPanel()).dispose();
+//                            view.gameFrame(registrationPanel()).dispose();
+                            var test = new JFrame();
+                            test.setVisible(false);
+                            test.dispose();
                             view.gameFrame(lpanel.loginPanel());
                         }
                     }
