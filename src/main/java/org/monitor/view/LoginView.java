@@ -23,12 +23,12 @@ public class LoginView extends JFrame implements ActionListener {
         String logintext = "<html><p>Welkom Bij de werk Monitor!\n Login om je werk prestatie bij te houden.</p></html>";
         welkomeText.setText(logintext);
         welkomeText.setFont(new Font("Arial", Font.BOLD, 20));
-        welkomeText.setForeground(new Color(245, 239, 239));
+        welkomeText.setForeground(Color.WHITE);
         welkomeText.setBounds(200, 28, 450, 200);
 
         username = new JLabel();
         username.setText("Gebruikersnaam / E-mailadres");
-        username.setForeground(new Color(191, 191, 191));
+        username.setForeground(Color.WHITE);
         username.setBounds(200, 208, 350, 20);
 
         usernameText = new JTextField(15);
@@ -36,7 +36,7 @@ public class LoginView extends JFrame implements ActionListener {
 
         password = new JLabel();
         password.setText("Wachtwoord");
-        password.setForeground(new Color(191, 191, 191));
+        password.setForeground(Color.WHITE);
         password.setBounds(200, 255, 170, 20);
 
         passwordText = new JPasswordField(15);
@@ -45,12 +45,12 @@ public class LoginView extends JFrame implements ActionListener {
         loginbutton = new JButton("Verzenden");
         loginbutton.setBounds(200, 310, 120, 25);
         loginbutton.setBackground(new Color(239, 204, 54));
-        loginbutton.setForeground(new Color(191, 191, 191));
+        loginbutton.setForeground(Color.BLACK);
 
         exitbutton = new JButton("Uitloggen");
         exitbutton.setBounds(400, 310, 120, 25);
         exitbutton.setBackground(new Color(209, 31, 61));
-        exitbutton.setForeground(new Color(191, 191, 191));
+        exitbutton.setForeground(Color.WHITE);
 
         JPanel loginPanel = new JPanel();
         loginPanel.setLayout(null);
@@ -63,7 +63,7 @@ public class LoginView extends JFrame implements ActionListener {
 
         loginPanel.add(loginbutton);
         loginPanel.add(exitbutton);
-        loginPanel.setBackground(new Color(40, 31, 107));
+        loginPanel.setBackground(new Color(171, 167, 201));
 
         add(loginPanel, BorderLayout.CENTER);
         loginbutton.addActionListener(this);
