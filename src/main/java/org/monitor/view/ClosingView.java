@@ -2,11 +2,7 @@ package org.monitor.view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
 
-import static java.awt.AWTEventMulticaster.add;
 
 public class ClosingView extends JFrame {
 
@@ -21,13 +17,13 @@ public class ClosingView extends JFrame {
         String logintext = "<html><p>Sluiten van alle voortgang</p></html>";
         welkomeText.setText(logintext);
         welkomeText.setFont(new Font("Arial", Font.BOLD, 20));
-        welkomeText.setForeground(new Color(245, 239, 239));
-        welkomeText.setBounds(200, 28, 450, 200);
+        welkomeText.setForeground(Color.WHITE);
+        welkomeText.setBounds(600, 28, 450, 200);
 
         JPanel closePanel = new JPanel();
         closePanel.setLayout(null);
         closePanel.add(welkomeText);
-        closePanel.setBackground(new Color(40, 31, 107));
+        closePanel.setBackground(new Color(171, 167, 201));
         add(closePanel, BorderLayout.CENTER);
         return closePanel;
     }
