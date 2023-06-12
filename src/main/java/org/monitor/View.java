@@ -7,8 +7,6 @@ public class View extends JFrame {
 
     private final ImageIcon icon = new ImageIcon("./resources/images/logo_small.png");
 
-
-
     /**
      * guid of the start screen called loginframe
      *
