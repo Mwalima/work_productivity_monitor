@@ -1,5 +1,8 @@
 package org.monitor.view;
 
+import org.monitor.View;
+import org.monitor.helper.CustomDialog;
+import org.monitor.helper.Reminder;
 import org.monitor.helper.Stopwatch;
 
 import javax.swing.*;
@@ -7,17 +10,15 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 
-public class MonitorView extends JFrame implements ActionListener, MouseListener, KeyListener {
+public class MonitorView extends JFrame implements ActionListener, MouseListener, KeyListener,TextListener  {
 
     public int count = 0;
-    private JLabel keyboardcount;
-    private JLabel mousecount;
-    private JLabel mousecounttextfield;
+    private JLabel keyboardcount,mousecounttextfield,mousecount;
+    private JButton exit_button;
     private JTextField keycount, mouseactionfield;
     private JTextArea mousecountText, keyboardcountText, test_text_input_field, test_textfield;
     private JPanel monitoringGridPanel, testGridPanel;
     private JScrollPane scrollPaneKey, scrollPaneMouse;
-
     private Border raisedbevel;
 
     static final String newline = System.getProperty("line.separator");
@@ -30,6 +31,11 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         welkomeText.setForeground(new Color(245, 239, 239));
         welkomeText.setBounds(200, 28, 450, 200);
         welkomeText.setHorizontalTextPosition(SwingConstants.RIGHT);
+
+        exit_button = new JButton("Exit");
+        exit_button.setBounds(200, 200, 100, 50);
+        exit_button.setFont(new Font("Arial", Font.PLAIN, 20));
+        exit_button.setFocusable(false);
 
         mousecount = new JLabel();
         mousecount.setText("mouse activity counter");
@@ -47,7 +53,7 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         keyboardcount = new JLabel();
         keyboardcount.setText("Keyboard activity counter");
         keyboardcount.setForeground(new Color(191, 191, 191));
-        keyboardcount.setBounds(200, 150, 200, 20);
+        keyboardcount.setBounds(600, 150, 200, 20);
 
         keyboardcountText = new JTextArea();
         keyboardcountText.setWrapStyleWord(true);
@@ -68,8 +74,8 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         //add mouse counter fields
         mousecounttextfield = new JLabel();
         mousecounttextfield.setText("Mouse monitor");
-        mousecounttextfield.setForeground(new Color(191, 191, 191));
-        mousecounttextfield.setBounds(400, 450, 200, 20);
+        mousecounttextfield.setForeground(Color.BLACK);
+        mousecounttextfield.setBounds(600, 450, 200, 20);
         mouseactionfield = new JTextField(15);
         mouseactionfield.setBounds(400, 500, 200, 28);
 
@@ -80,7 +86,7 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         JPanel monitoringBorderPanel = new JPanel();
         monitoringBorderPanel.setLayout(new BorderLayout());
         monitoringBorderPanel.add(welkomeText, BorderLayout.NORTH);
-        monitoringBorderPanel.setBackground(new Color(171, 167, 201));
+        monitoringBorderPanel.setBackground(new Color(255, 255, 255));
 
         //test tekst area
         test_textfield = new JTextArea("De test gaat om het zo snel en foutloos na typen van de tekst.\n\n" + "Veel vlaggen, liederen waarin Catalonië en Spanje („puta, puta”)" + "de hoofdrol spelen en meer dan genoeg bier om de warmte te trotseren. " + "De fans van Barcelona hebben aan het begin van de zaterdagmiddag hun stek " + "in het centrum van Eindhoven wel gevonden: voor de deur van " + "het hotel waarvandaan het team straks naar het Philips-stadion vertrekt. " + "Af en toe moeten de honderden supporters even inschikken om de stadsbus van lijn elf te laten passeren." + "" + "„Een mooi feest”, zeggen Mirreia en Marcos uit Barcelona. Ze volgen de favoriet " + "voor de finale van de Champions League al jaren. " + "Op het mannenvoetbal is het stel een beetje uitgekeken. „In de vrouwencompetitie kan " + "je voor 20 euro een kaartje krijgen, bij de mannen " + "is dat zeker het dubbele”, zegt Marcos. „En nooit zijn er problemen, dat telt voor ons ook.”" + "Vorig jaar was het stel nog in Turijn, waar Barcelona de beker aan Olympique Lyonnais moest laten." + "Tegen VFL Wolfsburg hopen ze op meer succes. „Maar dit is sowieso een mooie dag”, zegt Mirreia, „bij de vrouwen " + "zien we veel meer voetbal en minder agressie en theater op het veld”.");
@@ -93,18 +99,21 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         test_textfield.setEditable(false);
         test_textfield.setBounds(400, 700, 200, 100);
         JScrollPane scrollPane_test = new JScrollPane(test_textfield);
-        scrollPane_test.setPreferredSize(new Dimension(100, 300));
+        scrollPane_test.setPreferredSize(new Dimension(100, 200));
 
         test_text_input_field = new JTextArea();
         test_text_input_field.setWrapStyleWord(true);
         test_text_input_field.setBounds(400, 900, 200, 100);
         JScrollPane scrollPaneInput = new JScrollPane(test_text_input_field);
-        scrollPaneInput.setPreferredSize(new Dimension(100, 300));
+        scrollPaneInput.setPreferredSize(new Dimension(100, 200));
 
-        monitoringGridPanel = new JPanel(new GridLayout(4, 2));
+        monitoringGridPanel = new JPanel(new GridLayout(5, 2));
         //add test area to jframe
         testGridPanel = new JPanel(new GridLayout(2, 1));
 
+        //instantiate the stopwatch class
+        Stopwatch st = new Stopwatch();
+        JPanel timer = st.timer();
 
         //mousescrollpane
         monitoringGridPanel.add(mousecount);
@@ -113,10 +122,11 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         monitoringGridPanel.add(scrollPaneKey);
         monitoringGridPanel.add(mouseactionfield);
         monitoringGridPanel.add(keycount);
+        monitoringGridPanel.add(timer);
+        monitoringGridPanel.add(exit_button);
 
         //set border
-        raisedbevel = BorderFactory.createMatteBorder(10, 30, 30, 30, new Color(171, 167, 201));
-
+        raisedbevel = BorderFactory.createMatteBorder(10, 30, 30, 30, new Color(255, 255, 255));
         monitoringBorderPanel.setBorder(raisedbevel);
 
         testGridPanel.add(scrollPane_test);
@@ -125,14 +135,15 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         monitoringBorderPanel.add(monitoringGridPanel, BorderLayout.CENTER);
         monitoringBorderPanel.add(testGridPanel, BorderLayout.SOUTH);
 
-
         //listners
         test_text_input_field.addMouseListener(this);
         test_text_input_field.addKeyListener(this);
+
         mouseactionfield.addMouseListener(this);
         keyboardcountText.addKeyListener(this);
         mousecountText.addMouseListener(this);
         keycount.addKeyListener(this);
+        exit_button.addActionListener(this);
 
         return monitoringBorderPanel;
     }
@@ -237,33 +248,31 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         mousecountText.append(eventDescription + "." + newline);
     }
 
+    public void textValueChanged(TextEvent e) {
+        TextComponent tc = (TextComponent) e.getSource();
+        System.out.println("Typed value in TextComponent " + tc.getText());
+//        Stopwatch st = new Stopwatch();
+//        st.start();
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
+        View view = new View();
         //key action part
         mousecountText.setText("");
-        test_text_input_field.setText("");
+        //test_text_input_field.setText("");
         keyboardcountText.setText("");
 
-        if (e.getSource() == mouseactionfield) {
-            int n = 0;
+        if (e.getSource() == exit_button) {
+            Reminder rem = new Reminder(1);
+            var test = new JFrame();
+            test.setVisible(false);
+            test.dispose();
 
-            // sum of square roots of integers from 1 to n using Math.sqrt(x).
-            Stopwatch timer1 = new Stopwatch();
-            double sum1 = 0.0;
-            for (int i = 1; i <= n; i++) {
-                sum1 += Math.sqrt(i);
-            }
-            double time1 = timer1.elapsedTime();
-            mouseactionfield.setText(String.format("%s (%s.2f seconds)\n", sum1, time1));
+            CustomDialog dialog = new CustomDialog(view.gameFrame(this.monitoringPanel()), "De applicatie sluit over 3 seconden");
 
-            // sum of square roots of integers from 1 to n using Math.pow(x, 0.5).
-            Stopwatch timer2 = new Stopwatch();
-            double sum2 = 0.0;
-            for (int i = 1; i <= n; i++) {
-                sum2 += Math.pow(i, 0.5);
-            }
-            double time2 = timer2.elapsedTime();
-            mouseactionfield.setText(String.format("%s (%s.2f seconds)\n", sum2, time2));
+            dialog.setVisible(true);
         }
+
     }
+
 }

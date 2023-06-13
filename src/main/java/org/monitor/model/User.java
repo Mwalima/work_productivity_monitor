@@ -1,6 +1,6 @@
 package org.monitor.model;
 
-
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import org.monitor.Main;
 
 import javax.swing.*;
@@ -13,7 +13,6 @@ import java.util.Properties;
  * For more information go to https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc/12.2.0.jre11
  */
 public class User extends JFrame {
-
     public Connection connection;
     public PreparedStatement stment;
     private Integer phonenumber;
@@ -51,7 +50,6 @@ public class User extends JFrame {
     public String getLastname() {
         return lastname;
     }
-
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
@@ -174,13 +172,14 @@ public class User extends JFrame {
     }
 
     /**
-     * @param email
      * @return
      * @throws SQLException
      * @throws IOException  check if user is already registred
      */
 
     public Integer getUserData() throws SQLException, IOException {
+
+
         Properties properties = new Properties();
         properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
 
@@ -190,7 +189,7 @@ public class User extends JFrame {
         System.out.println(emailValue);
         System.out.println(passwordValue);
 
-        int rowsAffected = 0;
+        int rowsAffected=0;
 
         connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
@@ -205,14 +204,16 @@ public class User extends JFrame {
                 rowsAffected = 1;
                 return rowsAffected;
             }
-        } catch (Exception se) {
+        } catch (SQLServerException se) {
             do {
-//                System.out.println("SQL STATE: " + se.getSQLState());
-//                System.out.println("ERROR CODE: " + se.getErrorCode());
+                System.out.println("SQL STATE: " + se.getSQLState());
+                System.out.println("ERROR CODE: " + se.getErrorCode());
                 System.out.println("MESSAGE: " + se.getMessage());
                 System.out.println();
             } while (se != null);
         }
         return rowsAffected;
     }
+
 }
+

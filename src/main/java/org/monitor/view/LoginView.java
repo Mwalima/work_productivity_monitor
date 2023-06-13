@@ -1,12 +1,18 @@
 package org.monitor.view;
 
 import org.monitor.View;
+import org.monitor.helper.CustomDialog;
+import org.monitor.helper.Reminder;
 import org.monitor.model.User;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Timer;
+
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class LoginView extends JFrame implements ActionListener {
 
@@ -15,6 +21,8 @@ public class LoginView extends JFrame implements ActionListener {
     private JPasswordField passwordText;
     private String emailValue,passwordValue;
     private JButton loginbutton, exitbutton;
+    private Timer timer;
+
 
 
     public JPanel loginPanel() {
@@ -22,35 +30,40 @@ public class LoginView extends JFrame implements ActionListener {
         welkomeText = new JLabel();
         String logintext = "<html><p>Welkom Bij de werk Monitor!\n Login om je werk prestatie bij te houden.</p></html>";
         welkomeText.setText(logintext);
-        welkomeText.setFont(new Font("Arial", Font.BOLD, 20));
-        welkomeText.setForeground(Color.WHITE);
-        welkomeText.setBounds(200, 28, 450, 200);
+        welkomeText.setFont(new Font("Arial", Font.BOLD, 24));
+        welkomeText.setForeground(new Color(6, 6, 6));
+        welkomeText.setBounds(600, 28, 600, 200);
 
         username = new JLabel();
-        username.setText("Gebruikersnaam / E-mailadres");
-        username.setForeground(Color.WHITE);
-        username.setBounds(200, 208, 350, 20);
-
+        username.setText("E-mailadres");
+        username.setFont(new Font("Arial", Font.BOLD, 18));
+        username.setForeground(new Color(48, 48, 48, 100));
+        username.setBounds(400, 200, 200, 28);
         usernameText = new JTextField(15);
-        usernameText.setBounds(200, 227, 400, 28);
+        usernameText.setBounds(600, 200, 400, 28);
 
         password = new JLabel();
         password.setText("Wachtwoord");
-        password.setForeground(Color.WHITE);
-        password.setBounds(200, 255, 170, 20);
-
+        password.setFont(new Font("Arial", Font.BOLD, 18));
+        password.setForeground(new Color(48, 48, 48, 100));
+        password.setBounds(400, 230, 170, 28);
         passwordText = new JPasswordField(15);
-        passwordText.setBounds(200, 275, 400, 28);
+        passwordText.setBounds(600, 230, 400, 28);
 
-        loginbutton = new JButton("Verzenden");
-        loginbutton.setBounds(200, 310, 120, 25);
-        loginbutton.setBackground(new Color(239, 204, 54));
-        loginbutton.setForeground(Color.BLACK);
+        loginbutton = new JButton("inloggen");
+        loginbutton.setBounds(600, 400, 150, 50);
+        loginbutton.setFont(new Font("Arial", Font.BOLD, 20));
+        loginbutton.setFocusPainted(false);
+        loginbutton.setForeground(Color.WHITE);
+        loginbutton.setBackground(new Color(0,173,230));
+        loginbutton.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 
-        exitbutton = new JButton("Uitloggen");
-        exitbutton.setBounds(400, 310, 120, 25);
-        exitbutton.setBackground(new Color(209, 31, 61));
-        exitbutton.setForeground(Color.WHITE);
+        exitbutton = new JButton("Afsluiten");
+        exitbutton.setBounds(800, 400, 150, 50);
+        exitbutton.setFont(new Font("Arial", Font.BOLD, 20));
+        exitbutton.setFocusPainted(false);
+        exitbutton.setForeground(new Color(0,173,230));
+        exitbutton.setBorder(BorderFactory.createBevelBorder(1,new Color(0,173,230),new Color(0,173,230)));
 
         JPanel loginPanel = new JPanel();
         loginPanel.setLayout(null);
@@ -63,7 +76,7 @@ public class LoginView extends JFrame implements ActionListener {
 
         loginPanel.add(loginbutton);
         loginPanel.add(exitbutton);
-        loginPanel.setBackground(new Color(171, 167, 201));
+        loginPanel.setBackground(new Color(255, 255, 255));
 
         add(loginPanel, BorderLayout.CENTER);
         loginbutton.addActionListener(this);
@@ -71,36 +84,45 @@ public class LoginView extends JFrame implements ActionListener {
         return loginPanel;
     }
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
         View view = new View();
-        ClosingView closingView = new ClosingView();
         WrongCredentialsView wrongcredentials = new WrongCredentialsView();
         MonitorView monitorView = new MonitorView();
         User user = new User();
 
         if (e.getSource() == loginbutton) {
+
             try {
                 //get input from form
                 emailValue = usernameText.getText();
                 passwordValue = passwordText.getText();
 
-                //add values to user object
-                user.setEmailadress(emailValue);
-                user.setPassword(passwordValue);
+                if((!isEmpty(passwordValue)) && (!isEmpty(emailValue))){
+                    //add values to user object
+                    user.setEmailadress(emailValue);
+                    user.setPassword(passwordValue);
 
-                if (user.getUserData() == 1) {
-                    //if authentic, navigate user to a new page
-                    var test = new JFrame();
-                    test.setVisible(false);
-                    test.dispose();
-                    view.gameFrame(monitorView.monitoringPanel());
-                } else {
-                    //close previouos frame
+                    if (user.getUserData() == 1) {
+                        //if authentic, navigate user to a new page
+                        var test = new JFrame();
+                        test.setVisible(false);
+                        test.dispose();
+                        view.gameFrame(monitorView.monitoringPanel());
+                    } else {
+                        //close previouos frame
 //                    view.gameFrame(loginPanel()).dispose();
+                        var test = new JFrame();
+                        test.setVisible(false);
+                        test.dispose();
+                        view.gameFrame(wrongcredentials.wrongCredentialsPanel());
+                    }
+                }else{
                     var test = new JFrame();
                     test.setVisible(false);
                     test.dispose();
+
                     view.gameFrame(wrongcredentials.wrongCredentialsPanel());
                 }
             } catch (Exception ea) {
@@ -113,10 +135,15 @@ public class LoginView extends JFrame implements ActionListener {
             }
         }
         if (e.getSource() == exitbutton) {
+            Reminder rem = new Reminder(1);
+
             var test = new JFrame();
             test.setVisible(false);
             test.dispose();
-            view.gameFrame(closingView.closePanel());
+
+            CustomDialog dialog = new CustomDialog(view.gameFrame(this.loginPanel()), "De applicatie sluit over 3 seconden");
+            dialog.setVisible(true);
+
         }
     }
 }
