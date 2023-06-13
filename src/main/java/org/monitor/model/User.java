@@ -2,6 +2,7 @@ package org.monitor.model;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import org.monitor.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -171,13 +172,14 @@ public class User extends JFrame {
     }
 
     /**
-     * @param email
      * @return
      * @throws SQLException
      * @throws IOException  check if user is already registred
      */
 
     public Integer getUserData() throws SQLException, IOException {
+
+
         Properties properties = new Properties();
         properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
 
@@ -212,5 +214,6 @@ public class User extends JFrame {
         }
         return rowsAffected;
     }
+
 }
 

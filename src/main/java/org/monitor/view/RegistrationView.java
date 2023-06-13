@@ -29,80 +29,81 @@ public class RegistrationView extends JFrame implements ActionListener {
 
         //voornaam
         firstnamelabel = new JLabel();
-        firstnamelabel.setText("vul je voornaam in");
+        firstnamelabel.setText("Voornaam");
         firstnamelabel.setFont(new Font("Arial", Font.BOLD, 18));
         firstnamelabel.setForeground(new Color(48, 48, 48, 100));
-        firstnamelabel.setBounds(400, 200, 170, 28);
+        firstnamelabel.setBounds(300, 200, 170, 28);
         firstnametext = new JTextField(15);
         firstnametext.setBounds(600, 200, 400, 28);
 
         //achternaam
         lastnamelabel = new JLabel();
-        lastnamelabel.setText("vul je achternaam in");
+        lastnamelabel.setText("Achternaam");
         lastnamelabel.setFont(new Font("Arial", Font.BOLD, 18));
         lastnamelabel.setForeground(new Color(48, 48, 48, 100));
-        lastnamelabel.setBounds(400, 230, 170, 28);
+        lastnamelabel.setBounds(300, 230, 170, 28);
         laststnametext = new JTextField(15);
         laststnametext.setBounds(600, 230, 400, 28);
 
         //straatnaam
         streetnamelabel = new JLabel();
-        streetnamelabel.setText("vul je straatnaam in");
+        streetnamelabel.setText("Straatnaam");
         streetnamelabel.setFont(new Font("Arial", Font.BOLD, 18));
         streetnamelabel.setForeground(new Color(48, 48, 48, 100));
-        streetnamelabel.setBounds(400, 260, 170, 28);
+        streetnamelabel.setBounds(300, 260, 170, 28);
         streetnametext = new JTextField(15);
         streetnametext.setBounds(600, 260, 400, 28);
 
         //postalcode
         postalcodelabel = new JLabel();
-        postalcodelabel.setText("vul je postcode in (zonderspatie) 1234AB");
+        postalcodelabel.setText("Postcode");
         postalcodelabel.setFont(new Font("Arial", Font.BOLD, 18));
         postalcodelabel.setForeground(new Color(48, 48, 48, 100));
-        postalcodelabel.setBounds(400, 290, 350, 28);
+        postalcodelabel.setBounds(300, 290, 400, 28);
         postalcodetext = new JTextField(15);
+        postalcodetext.setToolTipText("1245AB");
         postalcodetext.setBounds(600, 290, 100, 28);
 
         //housenumber
         housenumberlabel = new JLabel();
-        housenumberlabel.setText("vul je huinummer in");
+        housenumberlabel.setText("Huisnummer");
         housenumberlabel.setFont(new Font("Arial", Font.BOLD, 18));
         housenumberlabel.setForeground(new Color(48, 48, 48, 100));
-        housenumberlabel.setBounds(400, 320, 170, 20);
+        housenumberlabel.setBounds(300, 320, 170, 20);
         housenumbertext = new JTextField(15);
         housenumbertext.setBounds(600, 320, 70, 28);
         //city
         citylabel = new JLabel();
-        citylabel.setText("vul je stad in");
+        citylabel.setText("Stad");
         citylabel.setFont(new Font("Arial", Font.BOLD, 18));
         citylabel.setForeground(new Color(48, 48, 48, 100));
-        citylabel.setBounds(400, 350, 170, 28);
+        citylabel.setBounds(300, 350, 170, 28);
         citytext = new JTextField(15);
         citytext.setBounds(600, 350, 400, 28);
 
         //country
         countrylabel = new JLabel();
-        countrylabel.setText("vul je land in");
+        countrylabel.setText("Land");
         countrylabel.setFont(new Font("Arial", Font.BOLD, 18));
         countrylabel.setForeground(new Color(48, 48, 48, 100));
-        countrylabel.setBounds(400, 380, 170, 28);
+        countrylabel.setBounds(300, 380, 170, 28);
         countrytext = new JTextField(15);
         countrytext.setBounds(600, 380, 400, 28);
 
         //phonenumber
         phonelabel = new JLabel();
-        phonelabel.setText("vul je telefoonnummer in (10 cijfers)");
+        phonelabel.setText("Telefoonnummer");
         phonelabel.setFont(new Font("Arial", Font.BOLD, 18));
         phonelabel.setForeground(new Color(48, 48, 48, 100));
-        phonelabel.setBounds(400, 410, 350, 28);
+        phonelabel.setBounds(300, 410, 400, 28);
         phonetext = new JTextField(15);
         phonetext.setBounds(600, 410, 400, 28);
 
         emailregistrationlabel = new JLabel();
-        emailregistrationlabel.setText("vul je email adres in");
+        emailregistrationlabel.setText("Email-adres");
         emailregistrationlabel.setFont(new Font("Arial", Font.BOLD, 18));
         emailregistrationlabel.setForeground(new Color(48, 48, 48, 100));
-        emailregistrationlabel.setBounds(400, 440, 170, 28);
+        emailregistrationlabel.setBounds(300, 440, 250, 28);
         emailregistrationtext = new JTextField(15);
         emailregistrationtext.setBounds(600, 440, 400, 28);
 
@@ -110,12 +111,12 @@ public class RegistrationView extends JFrame implements ActionListener {
         passwordregistrationLabel.setText("kies een wachtwoord");
         passwordregistrationLabel.setFont(new Font("Arial", Font.BOLD, 18));
         passwordregistrationLabel.setForeground(new Color(48, 48, 48, 100));
-        passwordregistrationLabel.setBounds(400, 470, 170, 28);
+        passwordregistrationLabel.setBounds(300, 470, 250, 28);
         passwordregistrationText = new JPasswordField(15);
         passwordregistrationText.setBounds(600, 470, 400, 28);
 
         registerbutton = new JButton("registreren");
-        registerbutton.setBounds(600, 520, 150, 50);
+        registerbutton.setBounds(600, 520, 250, 50);
         registerbutton.setFont(new Font("Arial", Font.BOLD, 20));
         registerbutton.setFocusPainted(false);
         registerbutton.setForeground(Color.WHITE);
@@ -130,7 +131,7 @@ public class RegistrationView extends JFrame implements ActionListener {
         inloglabel.setBounds(600, 620, 500, 50);
 
         inlogbutton = new JButton("inloggen");
-        inlogbutton.setBounds(600, 670, 150, 50);
+        inlogbutton.setBounds(600, 670, 250, 50);
         inlogbutton.setFont(new Font("Arial", Font.BOLD, 20));
         inlogbutton.setFocusPainted(false);
         inlogbutton.setForeground(new Color(0,173,230));

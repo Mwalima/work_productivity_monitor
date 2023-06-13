@@ -1,5 +1,8 @@
 package org.monitor.view;
 
+import org.monitor.View;
+import org.monitor.helper.CustomDialog;
+import org.monitor.helper.Reminder;
 import org.monitor.helper.Stopwatch;
 
 import javax.swing.*;
@@ -16,7 +19,6 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
     private JTextArea mousecountText, keyboardcountText, test_text_input_field, test_textfield;
     private JPanel monitoringGridPanel, testGridPanel;
     private JScrollPane scrollPaneKey, scrollPaneMouse;
-
     private Border raisedbevel;
 
     static final String newline = System.getProperty("line.separator");
@@ -84,7 +86,6 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         JPanel monitoringBorderPanel = new JPanel();
         monitoringBorderPanel.setLayout(new BorderLayout());
         monitoringBorderPanel.add(welkomeText, BorderLayout.NORTH);
-        monitoringBorderPanel.add(exit_button, BorderLayout.EAST);
         monitoringBorderPanel.setBackground(new Color(255, 255, 255));
 
         //test tekst area
@@ -106,7 +107,7 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         JScrollPane scrollPaneInput = new JScrollPane(test_text_input_field);
         scrollPaneInput.setPreferredSize(new Dimension(100, 200));
 
-        monitoringGridPanel = new JPanel(new GridLayout(6, 2));
+        monitoringGridPanel = new JPanel(new GridLayout(5, 2));
         //add test area to jframe
         testGridPanel = new JPanel(new GridLayout(2, 1));
 
@@ -122,9 +123,10 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         monitoringGridPanel.add(mouseactionfield);
         monitoringGridPanel.add(keycount);
         monitoringGridPanel.add(timer);
+        monitoringGridPanel.add(exit_button);
 
         //set border
-        raisedbevel = BorderFactory.createMatteBorder(10, 30, 30, 30, new Color(171, 167, 201));
+        raisedbevel = BorderFactory.createMatteBorder(10, 30, 30, 30, new Color(255, 255, 255));
         monitoringBorderPanel.setBorder(raisedbevel);
 
         testGridPanel.add(scrollPane_test);
@@ -141,6 +143,7 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         keyboardcountText.addKeyListener(this);
         mousecountText.addMouseListener(this);
         keycount.addKeyListener(this);
+        exit_button.addActionListener(this);
 
         return monitoringBorderPanel;
     }
@@ -248,14 +251,28 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
     public void textValueChanged(TextEvent e) {
         TextComponent tc = (TextComponent) e.getSource();
         System.out.println("Typed value in TextComponent " + tc.getText());
-        Stopwatch st = new Stopwatch();
-        st.start();
+//        Stopwatch st = new Stopwatch();
+//        st.start();
     }
     @Override
     public void actionPerformed(ActionEvent e) {
+        View view = new View();
         //key action part
         mousecountText.setText("");
         //test_text_input_field.setText("");
         keyboardcountText.setText("");
+
+        if (e.getSource() == exit_button) {
+            Reminder rem = new Reminder(1);
+            var test = new JFrame();
+            test.setVisible(false);
+            test.dispose();
+
+            CustomDialog dialog = new CustomDialog(view.gameFrame(this.monitoringPanel()), "De applicatie sluit over 3 seconden");
+
+            dialog.setVisible(true);
+        }
+
     }
+
 }
