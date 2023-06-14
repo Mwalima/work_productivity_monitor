@@ -27,12 +27,8 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-<<<<<<< HEAD
             <version>5.9.2</version>
             <scope>test</scope>
-=======
-            <version>RELEASE</version>
->>>>>>> development
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

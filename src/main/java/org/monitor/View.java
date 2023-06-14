@@ -22,8 +22,8 @@ public class View extends JFrame {
 
         form.setIconImage(image);
         form.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        form.setSize(1680,1680);
-        //form.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //form.setSize(1680,1680);
+        form.setExtendedState(JFrame.MAXIMIZED_BOTH);
         form.setTitle("Provincie Zuid-Holland Werk Monitor scherm");
         form.setLocationRelativeTo(null);
         form.setIconImage(icon.getImage());

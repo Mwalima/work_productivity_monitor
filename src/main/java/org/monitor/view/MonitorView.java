@@ -6,20 +6,33 @@ import org.monitor.helper.Reminder;
 import org.monitor.helper.Stopwatch;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 
 public class MonitorView extends JFrame implements ActionListener, MouseListener, KeyListener  {
 
     public int count = 0;
-    private JLabel keyboardcount,mousecounttextfield,mousecount;
+    private JLabel mousecounttextfield;
     private JButton exit_button,score_button;
     private JTextField keycount, mouseactionfield;
     private JTextArea mousecountText, keyboardcountText, test_text_input_field, test_textfield;
     private JPanel monitoringGridPanel, counterGridPanel,testGridPanel;
     private JScrollPane scrollPaneKey, scrollPaneMouse;
-    private Border raisedbevel,raisedbevel2,raisedbevel3;
+    JLabel timeLabel = new JLabel();
+
+    private int elpapesdTime = 0;
+    private int minutes = 0;
+    private int seconds = 0;
+    private int hours = 0;
+    private int milliseconds = 0;
+    private boolean started = false;
+    private String milliseconds_string = String.format("%02d", milliseconds);
+    private String seconds_string = String.format("%02d", seconds);
+    private String minutes_string = String.format("%02d", minutes);
+    private String hours_string = String.format("%02d", hours);
+    final static boolean shouldFill = true;
+    final static boolean shouldWeightX = true;
+    final static boolean RIGHT_TO_LEFT = false;
 
     static final String newline = System.getProperty("line.separator");
 
@@ -29,38 +42,37 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
          * _________________________________________
          * __-stopwatch____|____score____|__exitbutton___
          * _____mouse-activity___|___Key-activity____
-         * _________________________________________
-         * _________________________________________
+         * _______counter__ |____Counter_____________
+         * _______Teskst field________________________
          */
         JLabel welkomeText = new JLabel();
-        String logintext = "<html><h1 style=\"color:white;font-size:25px;margin-left:200px;\n" + "  width: 100%;\n" + "  padding: 10px;\">Start de vaardigheidstest</h1></html>";
+        String logintext = "Start de vaardigheidstest";
         welkomeText.setText(logintext);
-        welkomeText.setFont(new Font("Arial", Font.BOLD, 20));
-        welkomeText.setForeground(new Color(245, 239, 239));
+        welkomeText.setFont(new Font("Arial", Font.BOLD, 24));
+        welkomeText.setForeground(new Color(6, 6, 6));
         welkomeText.setBounds(200, 28, 450, 200);
         welkomeText.setHorizontalTextPosition(SwingConstants.RIGHT);
 
-
-        //instantiate the stopwatch class
-        Stopwatch st = new Stopwatch();
-        JPanel timer = st.timer();
+        timeLabel.setText(hours_string + ":" + minutes_string + ":" + seconds_string + ":" + milliseconds_string);
+        timeLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        timeLabel.setBorder(BorderFactory.createBevelBorder(1,new Color(0,173,230),new Color(0,173,230)));
+        timeLabel.setBackground(Color.WHITE);
+        timeLabel.setOpaque(true);
+        timeLabel.setHorizontalAlignment(JTextField.CENTER);
 
         //score panel
         score_button = new JButton("Score");
-        score_button.setBounds(200, 200, 100, 50);
+        score_button.setBounds(200, 200, 250, 150);
         score_button.setFont(new Font("Arial", Font.PLAIN, 20));
+        score_button.setBorder(BorderFactory.createBevelBorder(1,new Color(0,173,230),new Color(0,173,230)));
         score_button.setFocusable(false);
 
         //exit button
         exit_button = new JButton("Exit");
-        exit_button.setBounds(200, 200, 100, 50);
+        exit_button.setBounds(200, 200, 250, 150);
         exit_button.setFont(new Font("Arial", Font.PLAIN, 20));
+        exit_button.setBorder(BorderFactory.createBevelBorder(1,new Color(0,173,230),new Color(0,173,230)));
         exit_button.setFocusable(false);
-
-        mousecount = new JLabel();
-        mousecount.setText("mouse activity counter");
-        mousecount.setForeground(new Color(191, 191, 191));
-        mousecount.setBounds(500, 150, 200, 20);
 
         mousecountText = new JTextArea();
         mousecountText.setWrapStyleWord(true);
@@ -69,11 +81,6 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         scrollPaneMouse = new JScrollPane(mousecountText);
         scrollPaneMouse.setPreferredSize(new Dimension(100, 300));
         mousecountText.setEditable(false);
-        //keylistner label en area
-        keyboardcount = new JLabel();
-        keyboardcount.setText("Keyboard activity counter");
-        keyboardcount.setForeground(new Color(191, 191, 191));
-        keyboardcount.setBounds(600, 150, 200, 20);
 
         keyboardcountText = new JTextArea();
         keyboardcountText.setWrapStyleWord(true);
@@ -122,52 +129,104 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         JScrollPane scrollPaneInput = new JScrollPane(test_text_input_field);
         scrollPaneInput.setPreferredSize(new Dimension(100, 200));
 
-        //add title component
+        //add the layout in gridbag why the most difficult one?
         JPanel monitoringBorderPanel = new JPanel();
-        monitoringBorderPanel.setLayout(new BorderLayout());
-        monitoringBorderPanel.add(welkomeText, BorderLayout.NORTH);
+        monitoringBorderPanel.setLayout(new GridBagLayout());
         monitoringBorderPanel.setBackground(new Color(255, 255, 255));
-        //add button panel
-        monitoringGridPanel = new JPanel(new GridLayout(1, 3));
-        monitoringGridPanel.setBounds(100,100,800,150);
-        //add monitoring fields
-        counterGridPanel = new JPanel(new GridLayout(1, 4));
-        counterGridPanel.setBounds(100,100,800,150);
-        //add test and text area to frame
-        testGridPanel = new JPanel(new GridLayout(2, 1));
-        testGridPanel.setBounds(100,100,800,150);
-
-        //monitor
-        monitoringGridPanel.add(timer);
-        monitoringGridPanel.add(score_button);
-        monitoringGridPanel.add(exit_button);
-
-        //mousescrollpane
-//        counterGridPanel.add(mousecount);
-//        counterGridPanel.add(keyboardcount);
-        counterGridPanel.add(scrollPaneMouse);
-        counterGridPanel.add(scrollPaneKey);
-        counterGridPanel.add(mouseactionfield);
-        counterGridPanel.add(keycount);
-
-        testGridPanel.add(scrollPane_test);
-        testGridPanel.add(scrollPaneInput);
-
-        //set border
-        raisedbevel2 = BorderFactory.createMatteBorder(10, 30, 30, 30, new Color(255, 255, 255));
-        monitoringGridPanel.setBorder(raisedbevel2);
-
-        //set border
-        raisedbevel = BorderFactory.createMatteBorder(10, 30, 30, 30, new Color(255, 255, 255));
-        counterGridPanel.setBorder(raisedbevel);
-
-        raisedbevel3 = BorderFactory.createMatteBorder(10, 30, 30, 30, new Color(255, 255, 255));
-        testGridPanel.setBorder(raisedbevel3);
 
 
-        monitoringBorderPanel.add(monitoringGridPanel, BorderLayout.CENTER);
-        monitoringBorderPanel.add(counterGridPanel, BorderLayout.CENTER);
-        monitoringBorderPanel.add(testGridPanel, BorderLayout.SOUTH);
+        //specify the GridBagConstraints
+        GridBagConstraints c = new GridBagConstraints();
+        if (RIGHT_TO_LEFT) {
+            monitoringBorderPanel.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        }
+        if (shouldFill) {
+            //natural height, maximum width
+            c.fill = GridBagConstraints.HORIZONTAL;
+        }
+
+        c.fill = GridBagConstraints.PAGE_START;
+        c.gridx = 1;
+        c.gridy = 0;
+        c.insets = new Insets(0,0,10,0);
+        monitoringBorderPanel.add(welkomeText,c);
+
+        //add the timer on beneath and left
+        c.fill = GridBagConstraints.BOTH;;
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.insets = new Insets(10,0,0,0);
+        monitoringBorderPanel.add(timeLabel,c);
+
+        //add the scorefield on beneath of the title and center
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = 1;
+        c.gridy = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.insets = new Insets(10,10,0,0);
+        monitoringBorderPanel.add(score_button,c);
+
+       //add the exit_button on beneath of the title and right
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = 2;
+        c.gridy = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.insets = new Insets(10,10,0,0);
+        monitoringBorderPanel.add(exit_button,c);
+
+        //add the scrollPaneMouse on beneath of the button row
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = 0;
+        c.gridy = 3;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        monitoringBorderPanel.add(scrollPaneMouse,c);
+
+        //add the exit_button on beneath of the title and right
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = 2;
+        c.gridy = 3;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        monitoringBorderPanel.add(scrollPaneKey,c);
+
+        //add the mouseactionfield on beneath of the title and right
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 4;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        monitoringBorderPanel.add(mouseactionfield,c);
+
+        //add the keycount on beneath of the title and right
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 2;
+        c.gridy = 4;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        monitoringBorderPanel.add(keycount,c);
+
+        //add the keycount on beneath of the title and right
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = 0;
+        c.gridy = 5;
+        c.gridwidth = 3;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        monitoringBorderPanel.add(scrollPane_test,c);
+
+        //add the keycount on beneath of the title and right
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = 0;
+        c.gridy = 6;
+        c.gridwidth = 3;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        monitoringBorderPanel.add(scrollPaneInput,c);
 
         //listners
         test_text_input_field.addMouseListener(this);
@@ -192,6 +251,9 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         displayInfo(e, "KEY PRESSED: ");
         count++;
         keycount.setText("Totaal:" + count);
+        if(e.getSource() == test_text_input_field ){
+            start();
+        }
     }
 
     @Override
@@ -261,11 +323,14 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         displayMouseInfo("Mouse pressed; # of clicks: " + e.getClickCount());
         count++;
         mouseactionfield.setText("total mouse action:" + count);
+
+        if(e.getSource() == test_text_input_field ){
+            start();
+        }
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-    }
+    public void mouseReleased(MouseEvent e) { }
 
     @Override
     public void mouseEntered(MouseEvent e) {
@@ -277,11 +342,44 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
     public void mouseExited(MouseEvent e) {
 
         displayMouseInfo("Mouse exited" + e.getClickCount());
+        if(e.getSource() == test_text_input_field ){
+            stop();
+        }
     }
 
     private void displayMouseInfo(String eventDescription) {
 
         mousecountText.append(eventDescription + "." + newline);
+    }
+
+    Timer timer = new Timer(10, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            elpapesdTime += 1000;
+            hours = (elpapesdTime / 3600000);
+            minutes = (elpapesdTime / 60000) % 60;
+            seconds = (elpapesdTime / 1000) % 60;
+            milliseconds = (elpapesdTime);
+            if (milliseconds > 99) {
+                milliseconds = 0;
+            }
+            hours_string = String.format("%02d", hours);
+            minutes_string = String.format("%02d", minutes);
+            seconds_string = String.format("%02d", seconds);
+            milliseconds_string = String.format("%02d", milliseconds);
+
+            timeLabel.setText(hours_string + ":" + minutes_string + ":" + seconds_string + ":" + milliseconds_string);
+        }
+    });
+
+    public void start() {
+
+        timer.start();
+    }
+
+    public void stop() {
+
+        timer.stop();
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -300,5 +398,6 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
             CustomDialog dialog = new CustomDialog(view.gameFrame(this.monitoringPanel()), "De applicatie sluit over 3 seconden");
             dialog.setVisible(true);
         }
+
     }
 }

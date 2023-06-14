@@ -1,5 +1,6 @@
     package org.monitor;
 
+    import org.monitor.view.MonitorView;
     import org.monitor.view.StartView;
 
     import javax.swing.*;
@@ -16,7 +17,8 @@
                 //var registration = new RegistrationView();
                 var start = new StartView();
                 var view = new View();
-                view.gameFrame(start.startPanel());
+                MonitorView monitor = new MonitorView();
+                view.gameFrame(monitor.monitoringPanel());
             }
             catch(Exception e)
             {

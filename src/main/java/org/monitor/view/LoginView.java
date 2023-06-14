@@ -89,7 +89,7 @@ public class LoginView extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         View view = new View();
         WrongCredentialsView wrongcredentials = new WrongCredentialsView();
-        MonitorView monitorView = new MonitorView();
+        MonitorView monitor = new MonitorView();
         User user = new User();
 
         if (e.getSource() == loginbutton) {
@@ -109,7 +109,7 @@ public class LoginView extends JFrame implements ActionListener {
                         var test = new JFrame();
                         test.setVisible(false);
                         test.dispose();
-                        view.gameFrame(monitorView.monitoringPanel());
+                        view.gameFrame(monitor.monitoringPanel());
                     } else {
                         //close previouos frame
 //                    view.gameFrame(loginPanel()).dispose();

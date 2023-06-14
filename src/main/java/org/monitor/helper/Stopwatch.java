@@ -57,46 +57,46 @@ public class Stopwatch implements ActionListener {
         timeLabel.setText(hours_string + ":" + minutes_string + ":" + seconds_string + ":" + milliseconds_string);
         timeLabel.setBounds(100, 100, 200, 100);
         timeLabel.setFont(new Font("Arial", Font.PLAIN, 35));
-        timeLabel.setBorder(BorderFactory.createBevelBorder(1));
+        timeLabel.setBorder(BorderFactory.createBevelBorder(1,new Color(0,173,230),new Color(0,173,230)));
         timeLabel.setOpaque(true);
         timeLabel.setHorizontalAlignment(JTextField.CENTER);
 
-        seclbl = new JLabel();
-        minlbl = new JLabel();
-        hrslbl = new JLabel();
-        time_elapsed_label = new JLabel("Time elapsed");
-        time_elapsed_label.setBounds(400, 400, 200, 100);
+//        seclbl = new JLabel();
+//        minlbl = new JLabel();
+//        hrslbl = new JLabel();
+//        time_elapsed_label = new JLabel("Time elapsed");
+//        time_elapsed_label.setBounds(400, 400, 200, 100);
 
-        startButton = new JButton("Start");
-        startButton.setBounds(100, 200, 100, 50);
-        startButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        startButton.setFocusable(false);
+//        startButton = new JButton("Start");
+//        startButton.setBounds(100, 200, 100, 50);
+//        startButton.setFont(new Font("Arial", Font.PLAIN, 20));
+//        startButton.setFocusable(false);
+//
+//        stopButton = new JButton("Stop");
+//        stopButton.setBounds(200, 200, 100, 50);
+//        stopButton.setFont(new Font("Arial", Font.PLAIN, 20));
+//        stopButton.setFocusable(false);
 
-        stopButton = new JButton("Stop");
-        stopButton.setBounds(200, 200, 100, 50);
-        stopButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        stopButton.setFocusable(false);
-
-        stopwatchPanel.add(startButton);
-        stopwatchPanel.add(stopButton);
-
+//        stopwatchPanel.add(startButton);
+//        stopwatchPanel.add(stopButton);
+//
         stopwatchPanel.add(timeLabel);
-        stopwatchPanel.add(time_elapsed_label);
-
-        startButton.addActionListener(this);
-        stopButton.addActionListener(this);
+//        stopwatchPanel.add(time_elapsed_label);
+//
+//        startButton.addActionListener(this);
+//        stopButton.addActionListener(this);
 
         return stopwatchPanel;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == startButton) {
-            start();
-        }
-        if (e.getSource() == stopButton) {
-            stop();
-        }
+//        if (e.getSource() == startButton) {
+//            start();
+//        }
+//        if (e.getSource() == stopButton) {
+//            stop();
+//        }
     }
 
     public void start() {
