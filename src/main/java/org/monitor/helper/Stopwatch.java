@@ -1,7 +1,5 @@
 package org.monitor.helper;
 
-import org.monitor.View;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -47,15 +45,9 @@ public class Stopwatch implements ActionListener {
         }
     });
 
-    public Stopwatch() {
-
-        View frame = new View();
-        frame.gameFrame(this.timer());
-    }
-
     public void run() {
 
-        this.start();
+        timer.start();
     }
 
     public JPanel timer() {
@@ -100,7 +92,6 @@ public class Stopwatch implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == startButton) {
-
             start();
         }
         if (e.getSource() == stopButton) {
@@ -109,10 +100,12 @@ public class Stopwatch implements ActionListener {
     }
 
     public void start() {
+
         timer.start();
     }
 
     public void stop() {
+
         timer.stop();
     }
 }
