@@ -10,7 +10,6 @@ import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Timer;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
@@ -21,9 +20,6 @@ public class LoginView extends JFrame implements ActionListener {
     private JPasswordField passwordText;
     private String emailValue,passwordValue;
     private JButton loginbutton, exitbutton;
-    private Timer timer;
-
-
 
     public JPanel loginPanel() {
 
@@ -84,7 +80,6 @@ public class LoginView extends JFrame implements ActionListener {
         return loginPanel;
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
         View view = new View();
@@ -109,6 +104,8 @@ public class LoginView extends JFrame implements ActionListener {
                         var test = new JFrame();
                         test.setVisible(false);
                         test.dispose();
+                        //inset value into monitor view to db connectoin method becouse it is lost its value
+                        new MonitorView(emailValue,passwordValue);
                         view.gameFrame(monitor.monitoringPanel());
                     } else {
                         //close previouos frame
