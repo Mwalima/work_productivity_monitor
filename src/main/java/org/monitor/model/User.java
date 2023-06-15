@@ -103,20 +103,19 @@ public class User extends JFrame {
         this.phonenumber = phonenumber;
     }
 
-    public String getEmailadress() {
-        return emailadress;
-    }
-
     public void setEmailadress(String emailadress) {
         this.emailadress = emailadress;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEmailadress() {
+        return emailadress;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    public String getPassword() {
+        return password;
     }
 
     public boolean isRegistred() {
@@ -178,26 +177,17 @@ public class User extends JFrame {
      */
 
     public Integer getUserData() throws SQLException, IOException {
-
-
         Properties properties = new Properties();
         properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
-
-        String emailValue = this.getEmailadress();
-        String passwordValue = this.getPassword();
-
-        System.out.println(emailValue);
-        System.out.println(passwordValue);
-
-        int rowsAffected=0;
+        int rowsAffected = 0;
 
         connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
         try (PreparedStatement pstatement = connection.prepareStatement("SELECT * FROM [dbo].[users] WHERE [emailadress] LIKE ? AND [password] LIKE ?")) {
             // WHERE [emailadress] LIKE '%leitje%' AND [password] LIKE '%1234%'
 
-            pstatement.setString(1, "%" + emailValue + "%");
-            pstatement.setString(2, "%" + passwordValue + "%");
+            pstatement.setString(1, "%" + this.getEmailadress() + "%");
+            pstatement.setString(2, "%" + this.getPassword() + "%");
             ResultSet resultSet = pstatement.executeQuery();
 
             while (resultSet.next()) {
@@ -215,5 +205,44 @@ public class User extends JFrame {
         return rowsAffected;
     }
 
+    public String getUserName(String emailadress, String password) throws SQLException, IOException {
+        Properties properties = new Properties();
+        properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
+
+//        System.out.println("in username data"+emailadress);
+//        System.out.println("________________"+password);
+
+        connection = DriverManager.getConnection(properties.getProperty("url"), properties);
+
+        try (PreparedStatement pstatement = connection.prepareStatement("SELECT [firstname] FROM [dbo].[users] WHERE [emailadress] LIKE ? AND [password] LIKE ?")) {
+            // WHERE [emailadress] LIKE '%leitje%' AND [password] LIKE '%1234%'
+
+            pstatement.setString(1, "%" + this.getEmailadress() + "%");
+            pstatement.setString(2, "%" + this.getPassword() + "%");
+            ResultSet resultSet = pstatement.executeQuery();
+
+            ResultSetMetaData rsmd = resultSet.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+
+            while (resultSet.next()) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    //String columnValue = resultSet.getString(i);
+                    //System.out.print(columnValue + " " + rsmd.getColumnName(i));
+                    //username = columnValue + " " + rsmd.getColumnName(1);
+                    String username = resultSet.getString(i);
+                    //System.out.print(username);
+                    return username.toString();
+                }
+            }
+        } catch (SQLServerException se) {
+            do {
+                System.out.println("SQL STATE: " + se.getSQLState());
+                System.out.println("ERROR CODE: " + se.getErrorCode());
+                System.out.println("MESSAGE: " + se.getMessage());
+                System.out.println();
+            } while (se != null);
+        }
+        return "fail";
+    }
 }
 

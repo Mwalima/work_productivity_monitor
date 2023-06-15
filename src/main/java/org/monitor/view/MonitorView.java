@@ -3,40 +3,56 @@ package org.monitor.view;
 import org.monitor.View;
 import org.monitor.helper.CustomDialog;
 import org.monitor.helper.Reminder;
-import org.monitor.helper.Stopwatch;
+import org.monitor.model.User;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalTime;
 
 public class MonitorView extends JFrame implements ActionListener, MouseListener, KeyListener  {
 
     public int count = 0;
-    private JLabel mousecounttextfield;
-    private JButton exit_button,score_button;
+    public int mouse_count = 0;
+    private JLabel mousecounttextfield,username,score_label;
+    private JButton exit_button,stop_button;
     private JTextField keycount, mouseactionfield;
     private JTextArea mousecountText, keyboardcountText, test_text_input_field, test_textfield;
-    private JPanel monitoringGridPanel, counterGridPanel,testGridPanel;
     private JScrollPane scrollPaneKey, scrollPaneMouse;
     JLabel timeLabel = new JLabel();
-
-    private int elpapesdTime = 0;
+    private int elpapesdTime;
+    private LocalTime elpapesdTimeLocal;
     private int minutes = 0;
+    private int mousescore_string = 0;
+    private int keyscore_string = 0;
+    private int elapesdtime_string= 0;
+    private int score_string = 0;
     private int seconds = 0;
     private int hours = 0;
     private int milliseconds = 0;
-    private boolean started = false;
     private String milliseconds_string = String.format("%02d", milliseconds);
     private String seconds_string = String.format("%02d", seconds);
     private String minutes_string = String.format("%02d", minutes);
     private String hours_string = String.format("%02d", hours);
     final static boolean shouldFill = true;
-    final static boolean shouldWeightX = true;
     final static boolean RIGHT_TO_LEFT = false;
-
+    public String emailadress,password, name;
     static final String newline = System.getProperty("line.separator");
+    public MonitorView(){
 
-    public JPanel monitoringPanel() {
+    }
+    public MonitorView(String emailadress, String password) throws HeadlessException, SQLException, IOException {
+        this.emailadress = emailadress;
+        this.password = password;
+
+        User user = new User();
+        user.setEmailadress(this.emailadress);
+        user.setPassword(this.password);
+    }
+
+    public JPanel monitoringPanel() throws SQLException, IOException {
         /**
          * grid layout
          * _________________________________________
@@ -53,7 +69,22 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         welkomeText.setBounds(200, 28, 450, 200);
         welkomeText.setHorizontalTextPosition(SwingConstants.RIGHT);
 
-        timeLabel.setText(hours_string + ":" + minutes_string + ":" + seconds_string + ":" + milliseconds_string);
+        username = new JLabel();
+        username.setText("Welkom bij de test:");
+        username.setFont(new Font("Arial", Font.PLAIN, 14));
+        username.setForeground(new Color(6, 6, 6));
+        username.setBounds(200, 28, 450, 200);
+        User user = new User();
+//        try {
+//            name = user.getUserName(this.emailadress,this.password);
+//        } catch (SQLException ex) {
+//            throw new RuntimeException(ex);
+//        } catch (IOException ex) {
+//            throw new RuntimeException(ex);
+//        }
+        username.setText(name);
+
+        timeLabel.setText(hours_string + ":" + minutes_string + ":" + seconds_string);
         timeLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         timeLabel.setBorder(BorderFactory.createBevelBorder(1,new Color(0,173,230),new Color(0,173,230)));
         timeLabel.setBackground(Color.WHITE);
@@ -61,11 +92,12 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         timeLabel.setHorizontalAlignment(JTextField.CENTER);
 
         //score panel
-        score_button = new JButton("Score");
-        score_button.setBounds(200, 200, 250, 150);
-        score_button.setFont(new Font("Arial", Font.PLAIN, 20));
-        score_button.setBorder(BorderFactory.createBevelBorder(1,new Color(0,173,230),new Color(0,173,230)));
-        score_button.setFocusable(false);
+        score_label = new JLabel("mouse score:"+mousescore_string + " keyboard score:" + keyscore_string + " elapsed time:" + elapesdtime_string + " score:" + score_string);
+        score_label.setFont(new Font("Arial", Font.PLAIN, 20));
+        score_label.setBorder(BorderFactory.createBevelBorder(1,new Color(0,173,230),new Color(0,173,230)));
+        score_label.setBackground(Color.WHITE);
+        score_label.setOpaque(true);
+        score_label.setHorizontalAlignment(JTextField.CENTER);
 
         //exit button
         exit_button = new JButton("Exit");
@@ -73,6 +105,12 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         exit_button.setFont(new Font("Arial", Font.PLAIN, 20));
         exit_button.setBorder(BorderFactory.createBevelBorder(1,new Color(0,173,230),new Color(0,173,230)));
         exit_button.setFocusable(false);
+
+        stop_button = new JButton("Stop");
+        stop_button.setBounds(200, 200, 250, 150);
+        stop_button.setFont(new Font("Arial", Font.PLAIN, 20));
+        stop_button.setBorder(BorderFactory.createBevelBorder(1,new Color(0,173,230),new Color(0,173,230)));
+        stop_button.setFocusable(false);
 
         mousecountText = new JTextArea();
         mousecountText.setWrapStyleWord(true);
@@ -151,6 +189,12 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         c.insets = new Insets(0,0,10,0);
         monitoringBorderPanel.add(welkomeText,c);
 
+        c.fill = GridBagConstraints.PAGE_END;
+        c.gridx = 2;
+        c.gridy = 0;
+        c.insets = new Insets(10,10,10,0);
+        monitoringBorderPanel.add(username,c);
+
         //add the timer on beneath and left
         c.fill = GridBagConstraints.BOTH;;
         c.gridx = 0;
@@ -167,7 +211,7 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         c.weightx = 1.0;
         c.weighty = 1.0;
         c.insets = new Insets(10,10,0,0);
-        monitoringBorderPanel.add(score_button,c);
+        monitoringBorderPanel.add(score_label,c);
 
        //add the exit_button on beneath of the title and right
         c.fill = GridBagConstraints.BOTH;
@@ -186,6 +230,14 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         c.weighty = 1.0;
         monitoringBorderPanel.add(scrollPaneMouse,c);
 
+        //add the stop_button on beneath of the title and right
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = 1;
+        c.gridy = 3;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        monitoringBorderPanel.add(stop_button,c);
+
         //add the exit_button on beneath of the title and right
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 2;
@@ -193,6 +245,7 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         c.weightx = 1.0;
         c.weighty = 1.0;
         monitoringBorderPanel.add(scrollPaneKey,c);
+
 
         //add the mouseactionfield on beneath of the title and right
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -236,16 +289,15 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         keyboardcountText.addKeyListener(this);
         mousecountText.addMouseListener(this);
         keycount.addKeyListener(this);
+        stop_button.addActionListener(this);
         exit_button.addActionListener(this);
 
         return monitoringBorderPanel;
     }
-
     @Override
     public void keyTyped(KeyEvent e) {
         displayInfo(e, "KEY TYPED: ");
     }
-
     @Override
     public void keyPressed(KeyEvent e) {
         displayInfo(e, "KEY PRESSED: ");
@@ -255,12 +307,10 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
             start();
         }
     }
-
     @Override
     public void keyReleased(KeyEvent e) {
         displayInfo(e, "KEY RELEASED: ");
     }
-
     private void displayInfo(KeyEvent e, String keyStatus) {
         int id = e.getID();
         String keyString;
@@ -303,44 +353,36 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         } else { // (location == KeyEvent.KEY_LOCATION_UNKNOWN)
             locationString += "unknown";
         }
-
         keyboardcountText.append(keyStatus + newline + "    " + keyString + newline + "    " + modString + newline + "    " + actionString + newline + "    " + locationString + newline);
         keyboardcountText.setCaretPosition(keyboardcountText.getDocument().getLength());
-
-        Stopwatch st = new Stopwatch();
-        st.start();
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         displayMouseInfo("Mouse clicked; # of clicks: " + e.getClickCount());
-        count++;
-        mouseactionfield.setText("total mouse action:" + count);
+        mouse_count++;
+        mouseactionfield.setText("total mouse action:" + mouse_count);
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         displayMouseInfo("Mouse pressed; # of clicks: " + e.getClickCount());
-        count++;
-        mouseactionfield.setText("total mouse action:" + count);
-
+        mouse_count++;
+        mouseactionfield.setText("total mouse action:" + mouse_count);
         if(e.getSource() == test_text_input_field ){
             start();
         }
     }
-
     @Override
     public void mouseReleased(MouseEvent e) { }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
         displayMouseInfo("Mouse moved" + e.getClickCount());
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
         displayMouseInfo("Mouse exited" + e.getClickCount());
         if(e.getSource() == test_text_input_field ){
             stop();
@@ -348,10 +390,8 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
     }
 
     private void displayMouseInfo(String eventDescription) {
-
         mousecountText.append(eventDescription + "." + newline);
     }
-
     Timer timer = new Timer(10, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -359,26 +399,24 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
             hours = (elpapesdTime / 3600000);
             minutes = (elpapesdTime / 60000) % 60;
             seconds = (elpapesdTime / 1000) % 60;
-            milliseconds = (elpapesdTime);
+            //milliseconds = (elpapesdTime);
             if (milliseconds > 99) {
                 milliseconds = 0;
             }
             hours_string = String.format("%02d", hours);
             minutes_string = String.format("%02d", minutes);
             seconds_string = String.format("%02d", seconds);
-            milliseconds_string = String.format("%02d", milliseconds);
+           // milliseconds_string = String.format("%02d", milliseconds);
 
-            timeLabel.setText(hours_string + ":" + minutes_string + ":" + seconds_string + ":" + milliseconds_string);
+            timeLabel.setText(hours_string + ":" + minutes_string + ":" + seconds_string);
         }
     });
 
     public void start() {
-
         timer.start();
     }
 
     public void stop() {
-
         timer.stop();
     }
     @Override
@@ -386,18 +424,41 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         View view = new View();
         //key action part
         mousecountText.setText("");
-        //test_text_input_field.setText("");
+
         keyboardcountText.setText("");
+        try {
+            //closing action
+            if (e.getSource() == exit_button) {
+                Reminder rem = new Reminder(1);
+                var test = new JFrame();
+                test.setVisible(false);
+                test.dispose();
 
-        if (e.getSource() == exit_button) {
-            Reminder rem = new Reminder(1);
-            var test = new JFrame();
-            test.setVisible(false);
-            test.dispose();
+                CustomDialog dialog = new CustomDialog(view.gameFrame(this.monitoringPanel()), "De applicatie sluit over 3 seconden");
+                dialog.setVisible(true);
+            }
+            if(e.getSource() == stop_button){
 
-            CustomDialog dialog = new CustomDialog(view.gameFrame(this.monitoringPanel()), "De applicatie sluit over 3 seconden");
-            dialog.setVisible(true);
+                LocalTime t = LocalTime.parse( minutes_string+":"+seconds_string);
+                elpapesdTimeLocal= t;
+
+                //het aantal muis bewegingen moet 0 zijn
+                //het aantal keystrokes totaal = 1141
+                //de score is het aantal woorden per minuut
+                int time_converter = ((((hours * 60) * 60) + (minutes * 60) + (seconds)) / 60);
+                System.out.println(time_converter);
+
+                int score = (count/time_converter);
+
+                String total = String.format("Mouse score: %s| Keyboard score: %s | Elapsed time: %s |Score: %s", this.mouse_count,this.count,elpapesdTimeLocal,score);
+
+                score_label.setText(total);
+            }
+
+        } catch (SQLException ea) {
+            throw new RuntimeException(ea);
+        } catch (IOException ea) {
+            throw new RuntimeException(ea);
         }
-
     }
 }

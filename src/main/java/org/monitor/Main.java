@@ -18,7 +18,7 @@
                 var start = new StartView();
                 var view = new View();
                 MonitorView monitor = new MonitorView();
-                view.gameFrame(monitor.monitoringPanel());
+                view.gameFrame(start.startPanel());
             }
             catch(Exception e)
             {
