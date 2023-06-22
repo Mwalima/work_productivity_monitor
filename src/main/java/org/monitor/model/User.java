@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Properties;
 
 /**
@@ -205,34 +206,29 @@ public class User extends JFrame {
         return rowsAffected;
     }
 
-    public String getUserName(String emailadress, String password) throws SQLException, IOException {
+    public ArrayList<String> getUserName() throws SQLException, IOException {
         Properties properties = new Properties();
         properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
 
-//        System.out.println("in username data"+emailadress);
-//        System.out.println("________________"+password);
-
         connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
-        try (PreparedStatement pstatement = connection.prepareStatement("SELECT [firstname] FROM [dbo].[users] WHERE [emailadress] LIKE ? AND [password] LIKE ?")) {
+        try (PreparedStatement pstatement = connection.prepareStatement("SELECT * FROM [dbo].[users] WHERE [emailadress] LIKE ? AND [password] LIKE ?")) {
             // WHERE [emailadress] LIKE '%leitje%' AND [password] LIKE '%1234%'
-
-            pstatement.setString(1, "%" + this.getEmailadress() + "%");
-            pstatement.setString(2, "%" + this.getPassword() + "%");
+            System.out.println(this.emailadress+"-----------inside the getUserName function");
+            System.out.println(this.password+"-----------inside the getUserName function");
+            pstatement.setString(1, "%" + this.emailadress + "%");
+            pstatement.setString(2, "%" + this.password + "%");
             ResultSet resultSet = pstatement.executeQuery();
 
             ResultSetMetaData rsmd = resultSet.getMetaData();
             int columnsNumber = rsmd.getColumnCount();
 
+            ArrayList<String>result = new ArrayList<>();
             while (resultSet.next()) {
                 for (int i = 1; i <= columnsNumber; i++) {
-                    //String columnValue = resultSet.getString(i);
-                    //System.out.print(columnValue + " " + rsmd.getColumnName(i));
-                    //username = columnValue + " " + rsmd.getColumnName(1);
-                    String username = resultSet.getString(i);
-                    //System.out.print(username);
-                    return username.toString();
+                    result.add(resultSet.getString(i));
                 }
+                return result;
             }
         } catch (SQLServerException se) {
             do {
@@ -242,7 +238,43 @@ public class User extends JFrame {
                 System.out.println();
             } while (se != null);
         }
-        return "fail";
+        return null;
+    }
+
+    public ArrayList<String> getUserNameParams(String m_emailadress, String m_password) throws SQLException, IOException {
+        Properties properties = new Properties();
+        properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
+
+        connection = DriverManager.getConnection(properties.getProperty("url"), properties);
+
+        this.emailadress = m_emailadress;
+        this.password =m_password;
+
+        try (PreparedStatement pstatement = connection.prepareStatement("SELECT * FROM [dbo].[users] WHERE [emailadress] LIKE ? AND [password] LIKE ?")) {
+
+            pstatement.setString(1, "%" + this.emailadress + "%");
+            pstatement.setString(2, "%" + this.password + "%");
+            ResultSet resultSet = pstatement.executeQuery();
+
+            ResultSetMetaData rsmd = resultSet.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+
+            ArrayList<String>result = new ArrayList<>();
+            while (resultSet.next()) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    result.add(resultSet.getString(i));
+                }
+                return result;
+            }
+        } catch (SQLServerException se) {
+            do {
+                System.out.println("SQL STATE: " + se.getSQLState());
+                System.out.println("ERROR CODE: " + se.getErrorCode());
+                System.out.println("MESSAGE: " + se.getMessage());
+                System.out.println();
+            } while (se != null);
+        }
+        return null;
     }
 }
 

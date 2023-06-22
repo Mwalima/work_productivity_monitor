@@ -7,17 +7,26 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
+import static java.lang.Integer.parseInt;
+
 /**
  * For more information go to https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc/12.2.0.jre11
  */
 public class Score extends JFrame {
     public Connection connection;
     public PreparedStatement stment;
-
-    private int keystrokes,mousemovements,errors,testscore;
-
-    private Date elapsedTime, createdAt;
+    private int userId, keystrokes, mousemovements, testscore;
+    private Date createdAt;
+    private Time elapsedTime;
     private Statement statement;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     public int getKeystrokes() {
         return keystrokes;
@@ -35,13 +44,6 @@ public class Score extends JFrame {
         this.mousemovements = mousemovements;
     }
 
-    public int getErrors() {
-        return errors;
-    }
-
-    public void setErrors(int errors) {
-        this.errors = errors;
-    }
 
     public int getTestscore() {
         return testscore;
@@ -51,11 +53,11 @@ public class Score extends JFrame {
         this.testscore = testscore;
     }
 
-    public Date getElapsedTime() {
+    public Time getElapsedTime() {
         return elapsedTime;
     }
 
-    public void setElapsedTime(Date elapsedTime) {
+    public void setElapsedTime(Time elapsedTime) {
         this.elapsedTime = elapsedTime;
     }
 
@@ -67,40 +69,29 @@ public class Score extends JFrame {
         this.createdAt = createdAt;
     }
 
-    /**
-     * @throws SQLException
-     * @throws IOException
-     */
-    public Integer getLatesdId() throws SQLException, IOException {
-        //log.info("get id");
-        //create the connection to the db
+    public Integer insertScore(String uID, int keystrokes, int mouseclicks, int score, Time elapsedTime) throws SQLException, IOException {
+
+        //convert sting to int
+        userId = parseInt(uID);
+        setUserId(userId);
+        setKeystrokes(keystrokes);
+        setMousemovements(mouseclicks);
+        setTestscore(score);
+        setElapsedTime(elapsedTime);
+
         Properties properties = new Properties();
         properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
         connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
-        statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select max(id) from [dbo].[users]");
+        stment = connection.prepareStatement("INSERT INTO [dbo].[scores]([userId],[keystrokes],[mouseclicks],[score],[elapsedTime],[createdAt])VALUES(?,?,?,?,?,?);");
 
-        resultSet.next();
-        int myMaxId = resultSet.getInt(1);
-        System.out.println(myMaxId);
-        return myMaxId;
-    }
-
-    public Integer insertScore() throws SQLException, IOException {
-        //create the connection to the db
-        Properties properties = new Properties();
-        properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
-        connection = DriverManager.getConnection(properties.getProperty("url"), properties);
-
-        stment = connection.prepareStatement("INSERT INTO [dbo].[score]([keystrokes],[mousemovements],[errors],[testscore],[elapsedTime],[createdAt])VALUES(?,?,?,?,?);");
-
-        stment.setInt(1, this.getKeystrokes());
-        stment.setInt(2, this.getMousemovements());
-        stment.setInt(3, this.getErrors());
+        stment.setInt(1, this.getUserId());
+        stment.setInt(2, this.getKeystrokes());
+        stment.setInt(3, this.getMousemovements());
         stment.setInt(4, this.getTestscore());
-        stment.setDate(5, this.getElapsedTime());
-        stment.setDate(6, this.getCreatedAt());
+        stment.setTime(5, this.getElapsedTime());
+        stment.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
+
         int rowsAffected = stment.executeUpdate();
         return rowsAffected;
     }

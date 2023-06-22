@@ -105,7 +105,9 @@ public class LoginView extends JFrame implements ActionListener {
                         test.setVisible(false);
                         test.dispose();
                         //inset value into monitor view to db connectoin method becouse it is lost its value
+
                         new MonitorView(emailValue,passwordValue);
+
                         view.gameFrame(monitor.monitoringPanel());
                     } else {
                         //close previouos frame
