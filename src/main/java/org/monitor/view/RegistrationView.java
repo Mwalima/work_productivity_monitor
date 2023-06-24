@@ -72,6 +72,7 @@ public class RegistrationView extends JFrame implements ActionListener {
         housenumberlabel.setBounds(300, 320, 170, 20);
         housenumbertext = new JTextField(15);
         housenumbertext.setBounds(600, 320, 70, 28);
+
         //city
         citylabel = new JLabel();
         citylabel.setText("Stad");
@@ -99,6 +100,7 @@ public class RegistrationView extends JFrame implements ActionListener {
         phonetext = new JTextField(15);
         phonetext.setBounds(600, 410, 400, 28);
 
+        //email
         emailregistrationlabel = new JLabel();
         emailregistrationlabel.setText("Email-adres");
         emailregistrationlabel.setFont(new Font("Arial", Font.BOLD, 18));
@@ -107,6 +109,7 @@ public class RegistrationView extends JFrame implements ActionListener {
         emailregistrationtext = new JTextField(15);
         emailregistrationtext.setBounds(600, 440, 400, 28);
 
+        //password
         passwordregistrationLabel = new JLabel();
         passwordregistrationLabel.setText("kies een wachtwoord");
         passwordregistrationLabel.setFont(new Font("Arial", Font.BOLD, 18));
@@ -216,7 +219,7 @@ public class RegistrationView extends JFrame implements ActionListener {
                 }
 
                 try {
-                    Pattern emailpattern = Pattern.compile("[a-zA-Z.0-9]+@[a-zA-Z]+.[a-zA-Z]{2,5}");
+                    Pattern emailpattern = Pattern.compile("[a-zA-Z.0-9_]+@[a-zA-Z]+.[a-zA-Z]{2,5}");
                     Pattern postalcodepattern = Pattern.compile("[1-9]{1}[0-9]{3}[a-zA-Z]{2}");
                     Pattern housenumberpattern = Pattern.compile("[1-9]{1}[0-9]{0,3}");
                     Pattern phonepattern = Pattern.compile("[0]{1}[0-9]{9}");
