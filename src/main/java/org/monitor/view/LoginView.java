@@ -15,7 +15,8 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class LoginView extends JFrame implements ActionListener {
 
-    private JLabel welkomeText, username, password;
+    private JLabel username;
+    private JLabel password;
     private JTextField usernameText;
     private JPasswordField passwordText;
     private String emailValue,passwordValue;
@@ -23,7 +24,8 @@ public class LoginView extends JFrame implements ActionListener {
 
     public JPanel loginPanel() {
 
-        welkomeText = new JLabel();
+
+        JLabel welkomeText = new JLabel();
         String logintext = "<html><p>Welkom Bij de werk Monitor!\n Login om je werk prestatie bij te houden.</p></html>";
         welkomeText.setText(logintext);
         welkomeText.setFont(new Font("Arial", Font.BOLD, 24));
@@ -101,7 +103,7 @@ public class LoginView extends JFrame implements ActionListener {
 
                     if (user.getUserData() == 1) {
                         //if authentic, navigate user to a new page
-                        var test = new JFrame();
+                        JFrame test = new JFrame();
                         test.setVisible(false);
                         test.dispose();
                         //inset value into monitor view to db connectoin method becouse it is lost its value
@@ -112,13 +114,13 @@ public class LoginView extends JFrame implements ActionListener {
                     } else {
                         //close previouos frame
 //                    view.gameFrame(loginPanel()).dispose();
-                        var test = new JFrame();
+                        JFrame test = new JFrame();
                         test.setVisible(false);
                         test.dispose();
                         view.gameFrame(wrongcredentials.wrongCredentialsPanel());
                     }
                 }else{
-                    var test = new JFrame();
+                    JFrame test = new JFrame();
                     test.setVisible(false);
                     test.dispose();
 
@@ -126,7 +128,7 @@ public class LoginView extends JFrame implements ActionListener {
                 }
             } catch (Exception ea) {
                 //close previous frame
-                var test = new JFrame();
+                JFrame test = new JFrame();
                 test.setVisible(false);
                 test.dispose();
 
@@ -136,7 +138,7 @@ public class LoginView extends JFrame implements ActionListener {
         if (e.getSource() == exitbutton) {
             Reminder rem = new Reminder(1);
 
-            var test = new JFrame();
+            JFrame test = new JFrame();
             test.setVisible(false);
             test.dispose();
 

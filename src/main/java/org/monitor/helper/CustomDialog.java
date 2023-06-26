@@ -5,7 +5,6 @@ import java.awt.*;
 
 public class CustomDialog extends JDialog {
 
-    private final ImageIcon icon = new ImageIcon("./resources/images/logo_small.png");
 
     public CustomDialog(JFrame parent, String message) {
         super(parent, "Applicatie afsluiten", true);
@@ -16,9 +15,19 @@ public class CustomDialog extends JDialog {
         label.setHorizontalAlignment(SwingConstants.CENTER);
         add(label, BorderLayout.CENTER);
 
-        setPreferredSize(new Dimension(400, 400));
+        ImageIcon icon = new ImageIcon("./resources/images/logo_small.png");
         setIconImage(icon.getImage());
+
+        setPreferredSize(new Dimension(600, 400));
+
         pack();
         setLocationRelativeTo(parent);
+
+
+
+
+
+
+
     }
 }

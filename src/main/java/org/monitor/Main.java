@@ -9,8 +9,8 @@
 
             try
             {
-                var start = new StartView();
-                var view = new View();
+                StartView start = new StartView();
+                View view = new View();
                 view.gameFrame(start.startPanel());
             }
             catch(Exception e)

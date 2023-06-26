@@ -24,7 +24,8 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
 
     public int count = 0;
     public int mouse_count = 0;
-    private JLabel mousecounttextfield, username, score_label;
+    private JLabel username;
+    private JLabel score_label;
     private JButton exit_button, stop_button;
     private JTextField keycount, mouseactionfield;
     private JTextArea mousecountText, keyboardcountText, test_text_input_field, test_textfield;
@@ -133,7 +134,7 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         keycount.setBounds(200, 550, 200, 28);
 
         //add mouse counter fields
-        mousecounttextfield = new JLabel();
+        JLabel mousecounttextfield = new JLabel();
         mousecounttextfield.setText("Mouse monitor");
         mousecounttextfield.setForeground(Color.BLACK);
         mousecounttextfield.setBounds(600, 450, 200, 20);
@@ -430,11 +431,12 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
             //closing action
             if (e.getSource() == exit_button) {
                 Reminder rem = new Reminder(1);
-                var test = new JFrame();
+                JFrame test = new JFrame();
                 test.setVisible(false);
                 test.dispose();
 
                 CustomDialog dialog = new CustomDialog(view.gameFrame(this.monitoringPanel()), "De applicatie sluit over 3 seconden");
+                dialog.setFont(new Font("Arial", Font.BOLD, 18));
                 dialog.setVisible(true);
             }
             if (e.getSource() == stop_button) {

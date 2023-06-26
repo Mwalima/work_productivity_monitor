@@ -9,19 +9,17 @@ import java.awt.event.ActionListener;
 
 public class WrongCredentialsView extends JFrame implements ActionListener {
 
-    private JLabel welkomeText;
-     private JButton returnbutton;
-    private JPanel wroncredentialspanel;
+    private JButton returnbutton;
 
     public JPanel wrongCredentialsPanel() {
-        welkomeText = new JLabel();
+        JLabel welkomeText = new JLabel();
         String logintext = "<html><p>Vul AUB de correcte gegevens in.</p></html>";
         welkomeText.setText(logintext);
         welkomeText.setFont(new Font("Arial", Font.BOLD, 24));
         welkomeText.setForeground(new Color(6, 6, 6));
         welkomeText.setBounds(600, 28, 600, 200);
 
-        wroncredentialspanel = new JPanel();
+        JPanel wroncredentialspanel = new JPanel();
         wroncredentialspanel.setLayout(null);
         wroncredentialspanel.add(welkomeText);
         wroncredentialspanel.setBackground(new Color(255, 255, 255));
@@ -45,7 +43,7 @@ public class WrongCredentialsView extends JFrame implements ActionListener {
         LoginView lpanel = new LoginView();
         if (e.getSource() == returnbutton) {
             //close previouos frame
-            var test = new JFrame();
+            JFrame test = new JFrame();
             test.setVisible(false);
             test.dispose();
             view.gameFrame(lpanel.loginPanel());

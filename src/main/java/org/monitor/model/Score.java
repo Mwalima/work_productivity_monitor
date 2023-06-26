@@ -18,7 +18,6 @@ public class Score extends JFrame {
     private int userId, keystrokes, mousemovements, testscore;
     private Date createdAt;
     private Time elapsedTime;
-    private Statement statement;
 
     public int getUserId() {
         return userId;
@@ -44,7 +43,6 @@ public class Score extends JFrame {
         this.mousemovements = mousemovements;
     }
 
-
     public int getTestscore() {
         return testscore;
     }
@@ -61,13 +59,6 @@ public class Score extends JFrame {
         this.elapsedTime = elapsedTime;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
 
     public Integer insertScore(String uID, int keystrokes, int mouseclicks, int score, Time elapsedTime) throws SQLException, IOException {
 

@@ -6,8 +6,8 @@
 
     <groupId>org.monitor</groupId>
     <artifactId>work_productivity_monitor</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
+    <version>1.0</version>
+    <packaging>jar</packaging>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -36,4 +36,105 @@
             <version>3.12.0</version>
         </dependency>
     </dependencies>
+    <build>
+        <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <packageName>org.monitor</packageName>
+                        </manifest>
+                        <manifestEntries>
+                            <Created-By>Mwalima Peltenburg</Created-By>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                <artifactId>launch4j-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>l4j-clui</id>
+                        <phase>package</phase>
+                        <goals><goal>launch4j</goal></goals>
+                        <configuration>
+                            <dontWrapJar>false</dontWrapJar>
+                            <headerType>gui</headerType>
+                            <jar>C:\Users\peltemm\IdeaProjects\work_productivity_monitor\target\work_productivity_monitor-1.0.jar</jar>
+                            <outfile>C:\Users\peltemm\IdeaProjects\work_productivity_monitor\target\work_productivity_monitor.exe</outfile>
+                            <errTitle>Work Productivity Monitor needs JAVA please install java first</errTitle>
+                            <cmdLine></cmdLine>
+                            <chdir>.</chdir>
+                            <priority>normal</priority>
+                            <downloadUrl>http://java.com/download</downloadUrl>
+                            <supportUrl></supportUrl>
+                            <stayAlive>true</stayAlive>
+                            <restartOnCrash>false</restartOnCrash>
+                            <manifest>C:\Users\peltemm\IdeaProjects\work_productivity_monitor\src\META-INF\MANIFEST.MF</manifest>
+                            <icon>C:\Users\peltemm\IdeaProjects\work_productivity_monitor\src\main\resources\images\logo.ico</icon>
+                            <jre>
+                                <path>%JAVA_HOME%;%PATH%</path>
+                                <requiresJdk>false</requiresJdk>
+                                <requires64Bit>false</requires64Bit>
+                                <minVersion>1.8.0</minVersion>
+                                <maxVersion></maxVersion>
+                            </jre>
+                            <versionInfo>
+                                <fileVersion>1.0.0.0</fileVersion>
+                                <txtFileVersion>1.0.0.0</txtFileVersion>
+                                <fileDescription>Work Productivity Monitor</fileDescription>
+                                <copyright>Mwalima Peltenburg</copyright>
+                                <productVersion>1.0.0.0</productVersion>
+                                <txtProductVersion>1.0.0.0</txtProductVersion>
+                                <productName>Work Productivity Monitor</productName>
+                                <companyName>WebWonderWoman</companyName>
+                                <internalName>work_produtivity_monitor</internalName>
+                                <originalFilename>work_produtivity_monitor.exe</originalFilename>
+                                <trademarks></trademarks>
+                                <language>ENGLISH_US</language>
+                            </versionInfo>
+                            <messages>
+                                <startupErr>An error occurred while starting the application.</startupErr>
+                                <jreNotFoundErr>This application requires a Java Runtime Environment.</jreNotFoundErr>
+                                <jreVersionErr>This application requires a Java Runtime Environment</jreVersionErr>
+                                <launcherErr>The registry refers to a nonexistent Java Runtime Environment installation or the runtime is corrupted.</launcherErr>
+                                <instanceAlreadyExistsMsg>An application instance is already running.</instanceAlreadyExistsMsg>
+                            </messages>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <configuration>
+                    <includes>
+                        <include>org.monitor.test.TestMonitor</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>assembly</id>
+                        <phase>package</phase>
+                        <goals><goal>single</goal></goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        </pluginManagement>
+    </build>
 </project>

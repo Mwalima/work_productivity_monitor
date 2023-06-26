@@ -14,8 +14,18 @@ import java.util.regex.Pattern;
 public class RegistrationView extends JFrame implements ActionListener {
 
     public User user = new User();
-    private String userValue, firstname, lastname, streetname, postalcode, cityname, coutryname, emailregistration, passwordregistration, housenumber, phonenumber;
-    private JLabel welkomeText, firstnamelabel, lastnamelabel, streetnamelabel, housenumberlabel, phonelabel, citylabel, countrylabel, postalcodelabel, emailregistrationlabel, passwordregistrationLabel,inloglabel;
+    private String firstname, lastname, streetname, postalcode, cityname, coutryname, emailregistration, passwordregistration, housenumber, phonenumber;
+    private JLabel welkomeText;
+    private JLabel lastnamelabel;
+    private JLabel streetnamelabel;
+    private JLabel housenumberlabel;
+    private JLabel phonelabel;
+    private JLabel citylabel;
+    private JLabel countrylabel;
+    private JLabel postalcodelabel;
+    private JLabel emailregistrationlabel;
+    private JLabel passwordregistrationLabel;
+    private JLabel inloglabel;
     private JTextField emailregistrationtext, passwordregistrationText, firstnametext, laststnametext, streetnametext, housenumbertext, postalcodetext, phonetext, citytext, countrytext;
     private JButton registerbutton, inlogbutton;
 
@@ -28,7 +38,7 @@ public class RegistrationView extends JFrame implements ActionListener {
         welkomeText.setBounds(600, 28, 450, 200);
 
         //voornaam
-        firstnamelabel = new JLabel();
+        JLabel firstnamelabel = new JLabel();
         firstnamelabel.setText("Voornaam");
         firstnamelabel.setFont(new Font("Arial", Font.BOLD, 18));
         firstnamelabel.setForeground(new Color(48, 48, 48, 100));
@@ -192,7 +202,7 @@ public class RegistrationView extends JFrame implements ActionListener {
         View view = new View();
 
         if (e.getSource() == inlogbutton) {
-            var test = new JFrame();
+            JFrame test = new JFrame();
             test.setVisible(false);
             test.dispose();
 
@@ -219,7 +229,7 @@ public class RegistrationView extends JFrame implements ActionListener {
                 }
 
                 try {
-                    Pattern emailpattern = Pattern.compile("[a-zA-Z.0-9_]+@[a-zA-Z]+.[a-zA-Z]{2,5}");
+                    Pattern emailpattern = Pattern.compile("[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z]+.[a-zA-Z]{2,5}");
                     Pattern postalcodepattern = Pattern.compile("[1-9]{1}[0-9]{3}[a-zA-Z]{2}");
                     Pattern housenumberpattern = Pattern.compile("[1-9]{1}[0-9]{0,3}");
                     Pattern phonepattern = Pattern.compile("[0]{1}[0-9]{9}");
@@ -254,7 +264,7 @@ public class RegistrationView extends JFrame implements ActionListener {
                         if (user.insertUser() == 1) {
                             JOptionPane.showMessageDialog(null, "Succesvoll geregistreerd", "Succes", JOptionPane.PLAIN_MESSAGE);
 //                            view.gameFrame(registrationPanel()).dispose();
-                            var test = new JFrame();
+                            JFrame test = new JFrame();
                             test.setVisible(false);
                             test.dispose();
                             view.gameFrame(lpanel.loginPanel());

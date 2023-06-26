@@ -39,7 +39,7 @@ public class StartView extends JFrame {
 
                 View view = new View();
 
-                var test = new JFrame();
+                 JFrame test = new JFrame();
                 test.setVisible(false);
                 test.dispose();
                 view.gameFrame(registrate.registrationPanel());
