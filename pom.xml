@@ -3,7 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>org.monitor</groupId>
     <artifactId>work_productivity_monitor</artifactId>
     <version>1.0</version>
@@ -42,7 +41,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.2</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -52,6 +50,22 @@
                             <Created-By>Mwalima Peltenburg</Created-By>
                         </manifestEntries>
                     </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <compilerArgs>
+                        <arg>-verbose</arg>
+                        <arg>-Xlint:all,-options,-path</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
@@ -68,6 +82,11 @@
                             <jar>C:\Users\peltemm\IdeaProjects\work_productivity_monitor\target\work_productivity_monitor-1.0.jar</jar>
                             <outfile>C:\Users\peltemm\IdeaProjects\work_productivity_monitor\target\work_productivity_monitor.exe</outfile>
                             <errTitle>Work Productivity Monitor needs JAVA please install java first</errTitle>
+                            <classPath>
+                                <mainClass>org.monitor.Main</mainClass>
+                                <addDependencies>false</addDependencies>
+                                <preCp>anything</preCp>
+                            </classPath>
                             <cmdLine></cmdLine>
                             <chdir>.</chdir>
                             <priority>normal</priority>
@@ -76,7 +95,7 @@
                             <stayAlive>true</stayAlive>
                             <restartOnCrash>false</restartOnCrash>
                             <manifest>C:\Users\peltemm\IdeaProjects\work_productivity_monitor\src\META-INF\MANIFEST.MF</manifest>
-                            <icon>C:\Users\peltemm\IdeaProjects\work_productivity_monitor\src\main\resources\images\logo.ico</icon>
+                            <icon>logo.ico</icon>
                             <jre>
                                 <path>%JAVA_HOME%;%PATH%</path>
                                 <requiresJdk>false</requiresJdk>
@@ -112,7 +131,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
                 <configuration>
                     <includes>
                         <include>org.monitor.test.TestMonitor</include>
