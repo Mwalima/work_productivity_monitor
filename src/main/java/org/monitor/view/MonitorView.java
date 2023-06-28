@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 public class MonitorView extends JFrame implements ActionListener, MouseListener, KeyListener, CaretListener {
 
+    public Score insert_user_score = new Score();
     public int count = 0;
     public int mouse_count = 0;
     private JLabel username;
@@ -456,8 +457,6 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
                 int score = (count / time_converter);
 
                 String total = String.format("Mouse score: %s| Keyboard score: %s | Elapsed time: %s |Score: %s", this.mouse_count, this.count, elpapesdTimeLocal, score);
-                Score insert_user_score = new Score();
-
                 insert_user_score.insertScore(this.userId, this.count, this.mouse_count, score, elpapesdTimeLocal);
                 score_label.setText(total);
             }
