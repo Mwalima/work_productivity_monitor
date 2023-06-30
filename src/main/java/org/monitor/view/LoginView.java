@@ -21,6 +21,8 @@ public class LoginView extends JFrame implements ActionListener {
     private JPasswordField passwordText;
     private String emailValue,passwordValue;
     private JButton loginbutton, exitbutton;
+    private CustomDialog dialog;
+    private Reminder rem;
 
     public JPanel loginPanel() {
 
@@ -136,13 +138,13 @@ public class LoginView extends JFrame implements ActionListener {
             }
         }
         if (e.getSource() == exitbutton) {
-            Reminder rem = new Reminder(1);
+            rem = new Reminder(1);
 
             JFrame test = new JFrame();
             test.setVisible(false);
             test.dispose();
 
-            CustomDialog dialog = new CustomDialog(view.gameFrame(this.loginPanel()), "De applicatie sluit over 3 seconden");
+            dialog = new CustomDialog(view.gameFrame(this.loginPanel()), "De applicatie sluit over 3 seconden");
             dialog.setVisible(true);
 
         }

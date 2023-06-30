@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class View extends JFrame {
+
+    private Main form;
     /**
      *
      * @param panel
@@ -14,7 +16,7 @@ public class View extends JFrame {
     }
 
     public JFrame gameFrame(JPanel panel) {
-        Main form = new Main();
+        form = new Main();
 
         //TODO get icon working
         ImageIcon icon = new ImageIcon("/resources/images/logo.png");

@@ -8,6 +8,8 @@ import java.awt.*;
 
 public class StartView extends JFrame {
 
+    public RegistrationView registrate;
+
     public StartView(){
 
         startPanel();
@@ -17,7 +19,7 @@ public class StartView extends JFrame {
     public JPanel startPanel() {
         //TODO make panel close after 5 sec
         JLabel welkomeText = new JLabel();
-        String logintext = "<html><p>Welkom bij de typ-vaardigheid-monitor</p></html>";
+        String logintext = "<html><p>Welkom bij de Typ Vaardigheid Monitor</p></html>";
         welkomeText.setText(logintext);
         welkomeText.setFont(new Font("Arial", Font.BOLD, 42));
         welkomeText.setForeground(new Color(10, 0, 0));
@@ -34,7 +36,7 @@ public class StartView extends JFrame {
         begin.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         begin.setOpaque(true);
         begin.addActionListener(e -> {
-            RegistrationView registrate = new RegistrationView();
+            registrate = new RegistrationView();
              if( e.getSource()==begin ) {
 
                 View view = new View();

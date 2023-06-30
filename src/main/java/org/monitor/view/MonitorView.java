@@ -23,6 +23,8 @@ import java.util.ArrayList;
 public class MonitorView extends JFrame implements ActionListener, MouseListener, KeyListener, CaretListener {
 
     public Score insert_user_score = new Score();
+    private CustomDialog dialog;
+    private Reminder rem;
     public int count = 0;
     public int mouse_count = 0;
     private JLabel username;
@@ -50,7 +52,7 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
     private String type_tekst = "De test gaat om het zo snel en foutloos na typen van de tekst. Veel vlaggen, liederen waarin Catalonië en Spanje ('puta, puta') de hoofdrol spelen en meer dan genoeg bier om de warmte te trotseren. De fans van Barcelona hebben aan het begin van de zaterdagmiddag hun stek in het centrum van Eindhoven wel gevonden: voor de deur van het hotel waarvandaan het team straks naar het Philips-stadion vertrekt. Af en toe moeten de honderden supporters even inschikken om de stadsbus van lijn elf te laten passeren. 'Een mooi feest', zeggen Mirreia en Marcos uit Barcelona. Ze volgen de favoriet voor de finale van de Champions League al jaren. Op het mannenvoetbal is het stel een beetje uitgekeken. In de vrouwencompetitie kan je voor 20 euro een kaartje krijgen, bij de mannen is dat zeker het dubbele, zegt Marcos. En nooit zijn er problemen, dat telt voor ons ook. Vorig jaar was het stel nog in Turijn, waar Barcelona de beker aan Olympique Lyonnais moest laten. Tegen VFL Wolfsburg hopen ze op meer succes. 'Maar dit is sowieso een mooie dag', zegt Mirreia, bij de vrouwen zien we veel meer voetbal en minder agressie en theater op het veld.";
     final static boolean shouldFill = true;
     final static boolean RIGHT_TO_LEFT = false;
-    public static String emailadress, password, userId;
+    public static String emailadress, password, userId,userName;
     static final String newline = System.getProperty("line.separator");
 
     public MonitorView() {}
@@ -77,7 +79,18 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         welkomeText.setHorizontalTextPosition(SwingConstants.RIGHT);
 
         username = new JLabel();
-        username.setText("Welkom bij de test:");
+        User getuserfromdb = new User();
+        getuserfromdb.setEmailadress(emailadress);
+        getuserfromdb.setPassword(password);
+        try {
+            this.userName = getuserfromdb.getUserName().get(1);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        username.setText("Welkom bij de test:"+this.userName);
+
         username.setFont(new Font("Arial", Font.PLAIN, 14));
         username.setForeground(new Color(6, 6, 6));
         username.setBounds(200, 28, 450, 200);
@@ -104,6 +117,7 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         exit_button.setBorder(BorderFactory.createBevelBorder(1, new Color(0, 173, 230), new Color(0, 173, 230)));
         exit_button.setFocusable(false);
 
+        //big stop button
         stop_button = new JButton("Stop");
         stop_button.setBounds(200, 200, 250, 150);
         stop_button.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -142,6 +156,7 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         mouseactionfield = new JTextField(15);
         mouseactionfield.setBounds(400, 500, 200, 28);
 
+        //set the settings for the diplayed text
         keyboardcountText.setEditable(false);
         scrollPaneKey = new JScrollPane(keyboardcountText);
         scrollPaneKey.setPreferredSize(new Dimension(100, 300));
@@ -178,13 +193,14 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         if (shouldFill) {
             c.fill = GridBagConstraints.HORIZONTAL;
         }
-
+        //add welkomtekst tekstfield to gridbag
         c.fill = GridBagConstraints.PAGE_START;
         c.gridx = 1;
         c.gridy = 0;
         c.insets = new Insets(0, 0, 10, 0);
         monitoringBorderPanel.add(welkomeText, c);
 
+        //add username tekstfield to gridbag
         c.fill = GridBagConstraints.PAGE_END;
         c.gridx = 2;
         c.gridy = 0;
@@ -431,12 +447,14 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         try {
             //closing action
             if (e.getSource() == exit_button) {
+                //set the delay of the timer times 3
                 Reminder rem = new Reminder(1);
+                //try to close privious JFrame
                 JFrame test = new JFrame();
                 test.setVisible(false);
                 test.dispose();
-
-                CustomDialog dialog = new CustomDialog(view.gameFrame(this.monitoringPanel()), "De applicatie sluit over 3 seconden");
+                //show the dialog
+                dialog = new CustomDialog(view.gameFrame(this.monitoringPanel()), "De applicatie sluit over 3 seconden");
                 dialog.setFont(new Font("Arial", Font.BOLD, 18));
                 dialog.setVisible(true);
             }
@@ -450,11 +468,12 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
                 //converting localtime to time because of SQL datatype datatime
                 LocalTime totaltime = LocalTime.parse(hours_string + ":" + minutes_string + ":" + seconds_string);
                 Time time = Time.valueOf(totaltime);
-
+                //convert time to seconds
                 elpapesdTimeLocal = time;
-                int time_converter = ((((hours * 60) * 60) + (minutes * 60) + (seconds)) / 60);
 
-                int score = (count / time_converter);
+                int time_converter = ((((hours * 60) * 60) + (minutes * 60) + (seconds)) / 60);
+                //count is het aantal characters van de tekst
+                int score = (count() / time_converter);
 
                 String total = String.format("Mouse score: %s| Keyboard score: %s | Elapsed time: %s |Score: %s", this.mouse_count, this.count, elpapesdTimeLocal, score);
                 insert_user_score.insertScore(this.userId, this.count, this.mouse_count, score, elpapesdTimeLocal);
@@ -472,11 +491,13 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
     public void caretUpdate(CaretEvent e) {
 
         if (e.getSource() == test_text_input_field) {
+            //check where the word ends
             if (e.getMark() == e.getDot()) {
 
                 Highlighter hl = test_text_input_field.getHighlighter();
                 hl.removeAllHighlights();
 
+                //get the tekst split into array put into arraylist count and add to arraylist serpartely charecters
                 String pattern = type_tekst;
                 String str[] = pattern.split(" ");
                 ArrayList<String> al = new ArrayList<String>();
@@ -485,10 +506,10 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
                 }
 
                 for (String s : al) {
-
+                    //het the charcters one by one
                     String text = test_text_input_field.getText();
                     int index = text.indexOf(s);
-
+                    //loop and check if tekst match then paint
                     while (index >= 0) {
                         try {
                             Object o = hl.addHighlight(index, index + s.length(), DefaultHighlighter.DefaultPainter);
@@ -500,5 +521,16 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
                 }
             }
         }
+    }
+
+    public int count(){
+        //cout the charecters of the tekst.
+        //https://www.speedtypingonline.com/typing-equations
+        String pattern = type_tekst;
+
+        int characters = pattern.length();
+        int counter = (characters / 5 );
+
+        return counter;
     }
 }

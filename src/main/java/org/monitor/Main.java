@@ -6,12 +6,14 @@
 
 
     public class Main extends JFrame {
+        private static StartView start;
+        private static View view;
 
         public static void main(String[] args) {
 
             try
             {
-                StartView start = new StartView();
+               start = new StartView();
                 View view = new View();
                 view.gameFrame(start.startPanel());
             }

@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TestMonitorTest {
 
+    private InputCheker inputchecker;
+
     @Test
     public void whenMatchesTenDigitsNumber_thenCorrect() {
         Pattern pattern = Pattern.compile("^\\d{10}$");
@@ -33,6 +35,6 @@ class TestMonitorTest {
     public void testUsingRFC5322Regex() {
         String emailAddress = "username@domain.com";
         String regexPattern = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
-        assertTrue(InputCheker.patternMatches(emailAddress, regexPattern));
+        assertTrue(inputchecker.patternMatches(emailAddress, regexPattern));
     }
 }
