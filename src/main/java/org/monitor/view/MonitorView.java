@@ -44,7 +44,7 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
     private int seconds = 0;
     private int hours = 0;
     private int milliseconds = 0;
-    private int score = 0;
+    private double score = 0.0;
     private String milliseconds_string = String.format("%02d", milliseconds);
     private String seconds_string = String.format("%02d", seconds);
     private String minutes_string = String.format("%02d", minutes);
@@ -471,11 +471,17 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
                 //convert time to seconds
                 elpapesdTimeLocal = time;
 
-                int time_converter = ((((hours * 60) * 60) + (minutes * 60) + (seconds)) / 60);
+                int time_converter = (((hours * 60) + (minutes)));
                 //count is het aantal characters van de tekst
-                int score = (count() / time_converter);
 
-                String total = String.format("Mouse score: %s| Keyboard score: %s | Elapsed time: %s |Score: %s", this.mouse_count, this.count, elpapesdTimeLocal, score);
+                if(count() > 0) {
+                    double convert = (double)time_converter / 60;
+                    score = (double) (count() / convert);
+                }else{
+                    score = (double) 0.0;
+                }
+
+                String total = String.format("Mouse score: %s| Keyboard score: %s | Elapsed time: %s |Score in WPM: %s", this.mouse_count, this.count, elpapesdTimeLocal, score);
                 insert_user_score.insertScore(this.userId, this.count, this.mouse_count, score, elpapesdTimeLocal);
                 score_label.setText(total);
             }
@@ -501,12 +507,13 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
                 String pattern = type_tekst;
                 String str[] = pattern.split(" ");
                 ArrayList<String> al = new ArrayList<String>();
+
                 for (int i = 0; i < str.length; i++) {
                     al.add(str[i]);
                 }
 
                 for (String s : al) {
-                    //het the charcters one by one
+                    //the charcters one by one
                     String text = test_text_input_field.getText();
                     int index = text.indexOf(s);
                     //loop and check if tekst match then paint
@@ -526,11 +533,25 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
     public int count(){
         //cout the charecters of the tekst.
         //https://www.speedtypingonline.com/typing-equations
+        int counter = 0;
         String pattern = type_tekst;
+        String str[] = pattern.split(" ");
+        ArrayList<String> al = new ArrayList<String>();
 
-        int characters = pattern.length();
-        int counter = (characters / 5 );
+        for (int i = 0; i < str.length; i++) {
+            al.add(str[i]);
+        }
 
-        return counter;
+        for (String s : al) {
+            //the charcters one by one
+            String text = test_text_input_field.getText();
+            int index = text.indexOf(s);
+            while (index >= 0) {
+                index = text.indexOf(s, index + s.length());
+                counter++;
+            }
+        }
+
+        return counter/5;
     }
 }

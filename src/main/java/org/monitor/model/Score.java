@@ -15,7 +15,8 @@ import static java.lang.Integer.parseInt;
 public class Score extends JFrame {
     public Connection connection;
     public PreparedStatement stment;
-    private int userId, keystrokes, mousemovements, testscore;
+    private int userId, keystrokes, mousemovements;
+    private double testscore;
     private Date createdAt;
     private Time elapsedTime;
 
@@ -43,11 +44,11 @@ public class Score extends JFrame {
         this.mousemovements = mousemovements;
     }
 
-    public int getTestscore() {
+    public double getTestscore() {
         return testscore;
     }
 
-    public void setTestscore(int testscore) {
+    public void setTestscore(double testscore) {
         this.testscore = testscore;
     }
 
@@ -60,7 +61,7 @@ public class Score extends JFrame {
     }
 
 
-    public Integer insertScore(String uID, int keystrokes, int mouseclicks, int score, Time elapsedTime) throws SQLException, IOException {
+    public Integer insertScore(String uID, int keystrokes, int mouseclicks, double score, Time elapsedTime) throws SQLException, IOException {
 
         //convert sting to int
         userId = parseInt(uID);
@@ -68,6 +69,9 @@ public class Score extends JFrame {
         setKeystrokes(keystrokes);
         setMousemovements(mouseclicks);
         setTestscore(score);
+
+        System.out.println(elapsedTime);
+
         setElapsedTime(elapsedTime);
 
         Properties properties = new Properties();
@@ -79,7 +83,7 @@ public class Score extends JFrame {
         stment.setInt(1, this.getUserId());
         stment.setInt(2, this.getKeystrokes());
         stment.setInt(3, this.getMousemovements());
-        stment.setInt(4, this.getTestscore());
+        stment.setDouble(4, this.getTestscore());
         stment.setTime(5, this.getElapsedTime());
         stment.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
 

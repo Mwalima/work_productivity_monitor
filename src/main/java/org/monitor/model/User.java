@@ -213,9 +213,7 @@ public class User extends JFrame {
         connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
         try (PreparedStatement pstatement = connection.prepareStatement("SELECT * FROM [dbo].[users] WHERE [emailadress] LIKE ? AND [password] LIKE ?")) {
-            // WHERE [emailadress] LIKE '%leitje%' AND [password] LIKE '%1234%'
-            System.out.println(this.emailadress+"-----------inside the getUserName function");
-            System.out.println(this.password+"-----------inside the getUserName function");
+
             pstatement.setString(1, "%" + this.emailadress + "%");
             pstatement.setString(2, "%" + this.password + "%");
             ResultSet resultSet = pstatement.executeQuery();
