@@ -22,12 +22,5 @@ public class CustomDialog extends JDialog {
 
         pack();
         setLocationRelativeTo(parent);
-
-
-
-
-
-
-
     }
 }
