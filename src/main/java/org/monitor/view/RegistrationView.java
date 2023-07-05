@@ -205,7 +205,6 @@ public class RegistrationView extends JFrame implements ActionListener {
             JFrame test = new JFrame();
             test.setVisible(false);
             test.dispose();
-
             view.gameFrame(lpanel.loginPanel());
         }
 

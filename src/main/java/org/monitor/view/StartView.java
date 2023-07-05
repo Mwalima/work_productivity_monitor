@@ -6,16 +6,30 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
 
+/**
+ * The type Start view.
+ */
 public class StartView extends JFrame {
 
+    /**
+     * The Registrate.
+     */
     public RegistrationView registrate;
 
+    /**
+     * Instantiates a new Start view.
+     */
     public StartView(){
 
         startPanel();
     }
 
 
+    /**
+     * Start panel j panel.
+     *
+     * @return the j panel
+     */
     public JPanel startPanel() {
         //TODO make panel close after 5 sec
         JLabel welkomeText = new JLabel();
@@ -38,9 +52,7 @@ public class StartView extends JFrame {
         begin.addActionListener(e -> {
             registrate = new RegistrationView();
              if( e.getSource()==begin ) {
-
                 View view = new View();
-
                  JFrame test = new JFrame();
                 test.setVisible(false);
                 test.dispose();
@@ -53,7 +65,6 @@ public class StartView extends JFrame {
         sPanel.add(welkomeText);
         sPanel.setBackground(new Color(255, 255, 255));
         sPanel.add(begin);
-
         add(sPanel, BorderLayout.CENTER);
 
         return sPanel;

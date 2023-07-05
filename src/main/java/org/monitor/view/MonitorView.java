@@ -20,12 +20,24 @@ import java.sql.Time;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+/**
+ * The type Monitor view.
+ */
 public class MonitorView extends JFrame implements ActionListener, MouseListener, KeyListener, CaretListener {
 
+    /**
+     * The Insert user score.
+     */
     public Score insert_user_score = new Score();
     private CustomDialog dialog;
     private Reminder rem;
+    /**
+     * The Count.
+     */
     public int count = 0;
+    /**
+     * The Mouse count.
+     */
     public int mouse_count = 0;
     private JLabel username;
     private JLabel score_label;
@@ -33,6 +45,9 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
     private JTextField keycount, mouseactionfield;
     private JTextArea mousecountText, keyboardcountText, test_text_input_field, test_textfield;
     private JScrollPane scrollPaneKey, scrollPaneMouse;
+    /**
+     * The Time label.
+     */
     JLabel timeLabel = new JLabel();
     private int elpapesdTime;
     private Time elpapesdTimeLocal;
@@ -50,17 +65,56 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
     private String minutes_string = String.format("%02d", minutes);
     private String hours_string = String.format("%02d", hours);
     private String type_tekst = "De test gaat om het zo snel en foutloos na typen van de tekst. Veel vlaggen, liederen waarin Catalonië en Spanje ('puta, puta') de hoofdrol spelen en meer dan genoeg bier om de warmte te trotseren. De fans van Barcelona hebben aan het begin van de zaterdagmiddag hun stek in het centrum van Eindhoven wel gevonden: voor de deur van het hotel waarvandaan het team straks naar het Philips-stadion vertrekt. Af en toe moeten de honderden supporters even inschikken om de stadsbus van lijn elf te laten passeren. 'Een mooi feest', zeggen Mirreia en Marcos uit Barcelona. Ze volgen de favoriet voor de finale van de Champions League al jaren. Op het mannenvoetbal is het stel een beetje uitgekeken. In de vrouwencompetitie kan je voor 20 euro een kaartje krijgen, bij de mannen is dat zeker het dubbele, zegt Marcos. En nooit zijn er problemen, dat telt voor ons ook. Vorig jaar was het stel nog in Turijn, waar Barcelona de beker aan Olympique Lyonnais moest laten. Tegen VFL Wolfsburg hopen ze op meer succes. 'Maar dit is sowieso een mooie dag', zegt Mirreia, bij de vrouwen zien we veel meer voetbal en minder agressie en theater op het veld.";
+    /**
+     * The constant shouldFill.
+     */
     final static boolean shouldFill = true;
+    /**
+     * The constant RIGHT_TO_LEFT.
+     */
     final static boolean RIGHT_TO_LEFT = false;
-    public static String emailadress, password, userId,userName;
+    /**
+     * The constant emailadress.
+     */
+    public static String emailadress, /**
+     * The Password.
+     */
+    password, /**
+     * The User id.
+     */
+    userId, /**
+     * The User name.
+     */
+    userName;
+    /**
+     * The Newline.
+     */
     static final String newline = System.getProperty("line.separator");
 
+    /**
+     * Instantiates a new Monitor view.
+     */
     public MonitorView() {}
-    public MonitorView(String emailadress, String password) throws HeadlessException, SQLException, IOException {
+
+    /**
+     * Instantiates a new Monitor view.
+     *
+     * @param emailadress the emailadress
+     * @param password    the password
+     * @throws HeadlessException the headless exception
+     */
+    public MonitorView(String emailadress, String password) throws HeadlessException {
         this.emailadress = emailadress;
         this.password = password;
     }
 
+    /**
+     * Monitoring panel j panel.
+     *
+     * @return the j panel
+     * @throws SQLException the sql exception
+     * @throws IOException  the io exception
+     */
     public JPanel monitoringPanel() throws SQLException, IOException {
         /**
          * gridbag layout
@@ -410,6 +464,9 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         mousecountText.append(eventDescription + "." + newline);
     }
 
+    /**
+     * The Timer.
+     */
     Timer timer = new Timer(10, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -429,10 +486,16 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         }
     });
 
+    /**
+     * Start.
+     */
     public void start() {
         timer.start();
     }
 
+    /**
+     * Stop.
+     */
     public void stop() {
         timer.stop();
     }
@@ -530,6 +593,11 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         }
     }
 
+    /**
+     * Count int.
+     *
+     * @return the int
+     */
     public int count(){
         //cout the charecters of the tekst.
         //https://www.speedtypingonline.com/typing-equations

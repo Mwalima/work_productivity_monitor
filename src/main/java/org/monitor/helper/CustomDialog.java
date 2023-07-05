@@ -3,9 +3,18 @@ package org.monitor.helper;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The type Custom dialog.
+ */
 public class CustomDialog extends JDialog {
 
 
+    /**
+     * Instantiates a new Custom dialog.
+     *
+     * @param parent  the parent
+     * @param message the message
+     */
     public CustomDialog(JFrame parent, String message) {
         super(parent, "Applicatie afsluiten", true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
