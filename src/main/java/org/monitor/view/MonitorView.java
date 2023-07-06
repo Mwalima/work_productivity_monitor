@@ -29,25 +29,13 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
      * The Insert user score.
      */
     public Score insert_user_score = new Score();
-    private CustomDialog dialog;
-    private Reminder rem;
-    /**
-     * The Count.
-     */
     public int count = 0;
-    /**
-     * The Mouse count.
-     */
     public int mouse_count = 0;
-    private JLabel username;
     private JLabel score_label;
     private JButton exit_button, stop_button;
     private JTextField keycount, mouseactionfield;
     private JTextArea mousecountText, keyboardcountText, test_text_input_field, test_textfield;
     private JScrollPane scrollPaneKey, scrollPaneMouse;
-    /**
-     * The Time label.
-     */
     JLabel timeLabel = new JLabel();
     private int elpapesdTime;
     private Time elpapesdTimeLocal;
@@ -76,16 +64,7 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
     /**
      * The constant emailadress.
      */
-    public static String emailadress, /**
-     * The Password.
-     */
-    password, /**
-     * The User id.
-     */
-    userId, /**
-     * The User name.
-     */
-    userName;
+    public static String emailadress,password,userId,userName;
     /**
      * The Newline.
      */
@@ -132,7 +111,7 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         welkomeText.setBounds(200, 28, 450, 200);
         welkomeText.setHorizontalTextPosition(SwingConstants.RIGHT);
 
-        username = new JLabel();
+        JLabel username = new JLabel();
         User getuserfromdb = new User();
         getuserfromdb.setEmailadress(emailadress);
         getuserfromdb.setPassword(password);
@@ -517,7 +496,7 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
                 test.setVisible(false);
                 test.dispose();
                 //show the dialog
-                dialog = new CustomDialog(view.gameFrame(this.monitoringPanel()), "De applicatie sluit over 3 seconden");
+                CustomDialog dialog = new CustomDialog(view.gameFrame(this.monitoringPanel()), "De applicatie sluit over 3 seconden");
                 dialog.setFont(new Font("Arial", Font.BOLD, 18));
                 dialog.setVisible(true);
             }
@@ -544,7 +523,7 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
                     score = (double) 0.0;
                 }
 
-                String total = String.format("Mouse score: %s| Keyboard score: %s | Elapsed time: %s |Score in WPM: %s", this.mouse_count, this.count, elpapesdTimeLocal, score);
+                String total = String.format("Mouse score: %s| Keyboard score: %s | Elapsed time: %s |Score in WPM: %.2f", this.mouse_count, this.count, elpapesdTimeLocal, score);
                 insert_user_score.insertScore(this.userId, this.count, this.mouse_count, score, elpapesdTimeLocal);
                 score_label.setText(total);
             }
