@@ -13,19 +13,15 @@ import java.util.Properties;
 /**
  * For more information go to https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc/12.2.0.jre11
  */
-public class User extends JFrame {
-    public Connection connection;
-    public PreparedStatement stment;
+public class User extends JFrame {    
+
+    private static final long serialVersionUID = 1L;
     private Integer phonenumber;
     private String firstname, lastname, streetname, postalcode, cityname, country, emailadress, housenumber;
     private String password;
     private boolean registred = true;
-    private Statement statement;
-
-    public User() {
-        //            Dotenv dotenv = Dotenv.load();
-        //            dotenv.get("AZ_RESOURCE_GROUP");
-    }
+  
+    public User(){}//do not remove because of call in loginViewClass
 
     public User(Integer phonenumber, String housenumber, String firstname, String lastname, String streetname, String postalcode, String cityname, String country, String password, boolean registred) throws HeadlessException {
         this.phonenumber = phonenumber;
@@ -137,14 +133,14 @@ public class User extends JFrame {
         //create the connection to the db
         Properties properties = new Properties();
         properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
-        connection = DriverManager.getConnection(properties.getProperty("url"), properties);
+        Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
-        statement = connection.createStatement();
+        Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("select max(id) from [dbo].[users]");
 
         resultSet.next();
         int myMaxId = resultSet.getInt(1);
-        System.out.println(myMaxId);
+        //System.out.println(myMaxId);
         return myMaxId;
     }
 
@@ -152,9 +148,9 @@ public class User extends JFrame {
         //create the connection to the db
         Properties properties = new Properties();
         properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
-        connection = DriverManager.getConnection(properties.getProperty("url"), properties);
+        Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
-        stment = connection.prepareStatement("INSERT INTO [dbo].[users]([firstname],[lastname],[streetname],[postalcode],[housenumber],[city],[country],[phonenumber],[emailadress],[password],[registred]) VALUES (?,?,?,?,?,?,?,?,?,?,?);");
+        PreparedStatement stment = connection.prepareStatement("INSERT INTO [dbo].[users]([firstname],[lastname],[streetname],[postalcode],[housenumber],[city],[country],[phonenumber],[emailadress],[password],[registred]) VALUES (?,?,?,?,?,?,?,?,?,?,?);");
         //stment.setInt(1, this.getLatesdId());
         stment.setString(1, this.getFirstname());
         stment.setString(2, this.getLastname());
@@ -182,7 +178,7 @@ public class User extends JFrame {
         properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
         int rowsAffected = 0;
 
-        connection = DriverManager.getConnection(properties.getProperty("url"), properties);
+        Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
         try (PreparedStatement pstatement = connection.prepareStatement("SELECT * FROM [dbo].[users] WHERE [emailadress] LIKE ? AND [password] LIKE ?")) {
             // WHERE [emailadress] LIKE '%leitje%' AND [password] LIKE '%1234%'
@@ -210,7 +206,7 @@ public class User extends JFrame {
         Properties properties = new Properties();
         properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
 
-        connection = DriverManager.getConnection(properties.getProperty("url"), properties);
+        Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
         try (PreparedStatement pstatement = connection.prepareStatement("SELECT * FROM [dbo].[users] WHERE [emailadress] LIKE ? AND [password] LIKE ?")) {
 
@@ -243,7 +239,7 @@ public class User extends JFrame {
         Properties properties = new Properties();
         properties.load(Main.class.getClassLoader().getResourceAsStream("application.properties"));
 
-        connection = DriverManager.getConnection(properties.getProperty("url"), properties);
+        Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties);
 
         this.emailadress = m_emailadress;
         this.password =m_password;

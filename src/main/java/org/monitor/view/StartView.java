@@ -11,6 +11,8 @@ import java.awt.*;
  */
 public class StartView extends JFrame {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * The Registrate.
      */

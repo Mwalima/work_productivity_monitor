@@ -5,6 +5,8 @@ import java.awt.*;
 
 public class View extends JFrame {
 
+    private static final long serialVersionUID = 1L;
+
     private Main form;
     /**
      *

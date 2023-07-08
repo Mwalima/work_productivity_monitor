@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 
 public class WrongCredentialsView extends JFrame implements ActionListener {
 
+    private static final long serialVersionUID = 1L;
+
     private JButton returnbutton;
 
     public JPanel wrongCredentialsPanel() {

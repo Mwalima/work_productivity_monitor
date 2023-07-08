@@ -15,6 +15,8 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 public class LoginView extends JFrame implements ActionListener {
 
+    private static final long serialVersionUID = 1L;
+
     private JLabel username;
     private JLabel password;
     private JTextField usernameText;
@@ -22,8 +24,6 @@ public class LoginView extends JFrame implements ActionListener {
     private String emailValue,passwordValue;
     private JButton loginbutton, exitbutton;
     private CustomDialog dialog;
-    private Reminder rem;
-
     public JPanel loginPanel() {
 
 
@@ -85,11 +85,12 @@ public class LoginView extends JFrame implements ActionListener {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void actionPerformed(ActionEvent e) {
         View view = new View();
         WrongCredentialsView wrongcredentials = new WrongCredentialsView();
         MonitorView monitor = new MonitorView();
-        User user = new User();
+        User user = new User();//special case
 
         if (e.getSource() == loginbutton) {
 
@@ -138,7 +139,7 @@ public class LoginView extends JFrame implements ActionListener {
             }
         }
         if (e.getSource() == exitbutton) {
-            rem = new Reminder(1);
+            new Reminder(1);
 
             JFrame test = new JFrame();
             test.setVisible(false);

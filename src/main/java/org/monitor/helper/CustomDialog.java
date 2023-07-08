@@ -8,6 +8,8 @@ import java.awt.*;
  */
 public class CustomDialog extends JDialog {
 
+    private static final long serialVersionUID = 1L;
+
 
     /**
      * Instantiates a new Custom dialog.

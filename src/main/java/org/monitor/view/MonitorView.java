@@ -25,6 +25,8 @@ import java.util.ArrayList;
  */
 public class MonitorView extends JFrame implements ActionListener, MouseListener, KeyListener, CaretListener {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * The Insert user score.
      */
@@ -48,11 +50,10 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
     private int hours = 0;
     private int milliseconds = 0;
     private double score = 0.0;
-    private String milliseconds_string = String.format("%02d", milliseconds);
     private String seconds_string = String.format("%02d", seconds);
     private String minutes_string = String.format("%02d", minutes);
     private String hours_string = String.format("%02d", hours);
-    private String type_tekst = "De test gaat om het zo snel en foutloos na typen van de tekst. Veel vlaggen, liederen waarin Catalonië en Spanje ('puta, puta') de hoofdrol spelen en meer dan genoeg bier om de warmte te trotseren. De fans van Barcelona hebben aan het begin van de zaterdagmiddag hun stek in het centrum van Eindhoven wel gevonden: voor de deur van het hotel waarvandaan het team straks naar het Philips-stadion vertrekt. Af en toe moeten de honderden supporters even inschikken om de stadsbus van lijn elf te laten passeren. 'Een mooi feest', zeggen Mirreia en Marcos uit Barcelona. Ze volgen de favoriet voor de finale van de Champions League al jaren. Op het mannenvoetbal is het stel een beetje uitgekeken. In de vrouwencompetitie kan je voor 20 euro een kaartje krijgen, bij de mannen is dat zeker het dubbele, zegt Marcos. En nooit zijn er problemen, dat telt voor ons ook. Vorig jaar was het stel nog in Turijn, waar Barcelona de beker aan Olympique Lyonnais moest laten. Tegen VFL Wolfsburg hopen ze op meer succes. 'Maar dit is sowieso een mooie dag', zegt Mirreia, bij de vrouwen zien we veel meer voetbal en minder agressie en theater op het veld.";
+    private final String type_tekst = "De test gaat om het zo snel en foutloos na typen van de tekst. Veel vlaggen, liederen waarin Catalonië en Spanje ('puta, puta') de hoofdrol spelen en meer dan genoeg bier om de warmte te trotseren. De fans van Barcelona hebben aan het begin van de zaterdagmiddag hun stek in het centrum van Eindhoven wel gevonden: voor de deur van het hotel waarvandaan het team straks naar het Philips-stadion vertrekt. Af en toe moeten de honderden supporters even inschikken om de stadsbus van lijn elf te laten passeren. 'Een mooi feest', zeggen Mirreia en Marcos uit Barcelona. Ze volgen de favoriet voor de finale van de Champions League al jaren. Op het mannenvoetbal is het stel een beetje uitgekeken. In de vrouwencompetitie kan je voor 20 euro een kaartje krijgen, bij de mannen is dat zeker het dubbele, zegt Marcos. En nooit zijn er problemen, dat telt voor ons ook. Vorig jaar was het stel nog in Turijn, waar Barcelona de beker aan Olympique Lyonnais moest laten. Tegen VFL Wolfsburg hopen ze op meer succes. 'Maar dit is sowieso een mooie dag', zegt Mirreia, bij de vrouwen zien we veel meer voetbal en minder agressie en theater op het veld.";
     /**
      * The constant shouldFill.
      */
@@ -83,8 +84,8 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
      * @throws HeadlessException the headless exception
      */
     public MonitorView(String emailadress, String password) throws HeadlessException {
-        this.emailadress = emailadress;
-        this.password = password;
+        MonitorView.emailadress = emailadress;
+        MonitorView.password = password;
     }
 
     /**
@@ -116,13 +117,11 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
         getuserfromdb.setEmailadress(emailadress);
         getuserfromdb.setPassword(password);
         try {
-            this.userName = getuserfromdb.getUserName().get(1);
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        } catch (IOException ex) {
+            MonitorView.userName = getuserfromdb.getUserName().get(1);
+        } catch (SQLException | IOException ex) {
             throw new RuntimeException(ex);
         }
-        username.setText("Welkom bij de test:"+this.userName);
+        username.setText("Welkom bij de test:"+ MonitorView.userName);
 
         username.setFont(new Font("Arial", Font.PLAIN, 14));
         username.setForeground(new Color(6, 6, 6));
@@ -505,7 +504,7 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
                 User getuserfromdb = new User();
                 getuserfromdb.setEmailadress(emailadress);
                 getuserfromdb.setPassword(password);
-                this.userId = getuserfromdb.getUserName().get(0);
+                MonitorView.userId = getuserfromdb.getUserName().get(0);
 
                 //converting localtime to time because of SQL datatype datatime
                 LocalTime totaltime = LocalTime.parse(hours_string + ":" + minutes_string + ":" + seconds_string);
@@ -518,19 +517,17 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
 
                 if(count() > 0) {
                     double convert = (double)time_converter / 60;
-                    score = (double) (count() / convert);
+                    score = count() / convert;
                 }else{
-                    score = (double) 0.0;
+                    score = 0.0;
                 }
 
                 String total = String.format("Mouse score: %s| Keyboard score: %s | Elapsed time: %s |Score in WPM: %.2f", this.mouse_count, this.count, elpapesdTimeLocal, score);
-                insert_user_score.insertScore(this.userId, this.count, this.mouse_count, score, elpapesdTimeLocal);
+                insert_user_score.insertScore(MonitorView.userId, this.count, this.mouse_count, score, elpapesdTimeLocal);
                 score_label.setText(total);
             }
 
-        } catch (SQLException ea) {
-            throw new RuntimeException(ea);
-        } catch (IOException ea) {
+        } catch (SQLException | IOException ea) {
             throw new RuntimeException(ea);
         }
     }

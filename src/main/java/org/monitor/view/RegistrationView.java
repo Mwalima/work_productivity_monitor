@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
 
 public class RegistrationView extends JFrame implements ActionListener {
 
+    private static final long serialVersionUID = 1L;
+
     public User user = new User();
     private String firstname, lastname, streetname, postalcode, cityname, coutryname, emailregistration, passwordregistration, housenumber, phonenumber;
     private JLabel welkomeText;
