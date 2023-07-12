@@ -26,7 +26,7 @@ public class CustomDialog extends JDialog {
         label.setHorizontalAlignment(SwingConstants.CENTER);
         add(label, BorderLayout.CENTER);
 
-        ImageIcon icon = new ImageIcon("./resources/images/logo_small.png");
+        ImageIcon icon = new ImageIcon("./resources/images/logo.png");
         setIconImage(icon.getImage());
 
         setPreferredSize(new Dimension(600, 400));
