@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 public class RegistrationView extends JFrame implements ActionListener {
 
     private static final long serialVersionUID = 1L;
-
     public User user = new User();
     private String firstname, lastname, streetname, postalcode, cityname, coutryname, emailregistration, passwordregistration, housenumber, phonenumber;
     private JLabel welkomeText;
@@ -66,24 +65,25 @@ public class RegistrationView extends JFrame implements ActionListener {
         streetnametext = new JTextField(15);
         streetnametext.setBounds(600, 260, 400, 28);
 
-        //postalcode
-        postalcodelabel = new JLabel();
-        postalcodelabel.setText("Postcode");
-        postalcodelabel.setFont(new Font("Arial", Font.BOLD, 18));
-        postalcodelabel.setForeground(new Color(48, 48, 48, 100));
-        postalcodelabel.setBounds(300, 290, 400, 28);
-        postalcodetext = new JTextField(15);
-        postalcodetext.setToolTipText("1245AB");
-        postalcodetext.setBounds(600, 290, 100, 28);
-
         //housenumber
         housenumberlabel = new JLabel();
         housenumberlabel.setText("Huisnummer");
         housenumberlabel.setFont(new Font("Arial", Font.BOLD, 18));
         housenumberlabel.setForeground(new Color(48, 48, 48, 100));
-        housenumberlabel.setBounds(300, 320, 170, 20);
+        housenumberlabel.setBounds(300, 290, 400, 28);
         housenumbertext = new JTextField(15);
-        housenumbertext.setBounds(600, 320, 70, 28);
+        housenumbertext.setToolTipText("80");
+        housenumbertext.setBounds(600, 290, 100, 28);
+
+        //postalcode
+        postalcodelabel = new JLabel();
+        postalcodelabel.setText("Postcode");
+        postalcodelabel.setFont(new Font("Arial", Font.BOLD, 18));
+        postalcodelabel.setForeground(new Color(48, 48, 48, 100));
+        postalcodelabel.setBounds(300, 320, 170, 20);
+        postalcodetext = new JTextField(15);
+        postalcodetext.setToolTipText("1245AB");
+        postalcodetext.setBounds(600, 320, 70, 28);
 
         //city
         citylabel = new JLabel();
@@ -92,6 +92,7 @@ public class RegistrationView extends JFrame implements ActionListener {
         citylabel.setForeground(new Color(48, 48, 48, 100));
         citylabel.setBounds(300, 350, 170, 28);
         citytext = new JTextField(15);
+        citytext.setToolTipText("Amsterdam");
         citytext.setBounds(600, 350, 400, 28);
 
         //country
@@ -110,6 +111,7 @@ public class RegistrationView extends JFrame implements ActionListener {
         phonelabel.setForeground(new Color(48, 48, 48, 100));
         phonelabel.setBounds(300, 410, 400, 28);
         phonetext = new JTextField(15);
+        phonetext.setToolTipText("0612345678");
         phonetext.setBounds(600, 410, 400, 28);
 
         //email
@@ -119,6 +121,7 @@ public class RegistrationView extends JFrame implements ActionListener {
         emailregistrationlabel.setForeground(new Color(48, 48, 48, 100));
         emailregistrationlabel.setBounds(300, 440, 250, 28);
         emailregistrationtext = new JTextField(15);
+        emailregistrationtext.setToolTipText("test.werk@gmail.com");
         emailregistrationtext.setBounds(600, 440, 400, 28);
 
         //password
@@ -165,11 +168,11 @@ public class RegistrationView extends JFrame implements ActionListener {
         registrationPanel.add(streetnamelabel);
         registrationPanel.add(streetnametext);
 
-        registrationPanel.add(postalcodelabel);
-        registrationPanel.add(postalcodetext);
-
         registrationPanel.add(housenumberlabel);
         registrationPanel.add(housenumbertext);
+
+        registrationPanel.add(postalcodelabel);
+        registrationPanel.add(postalcodetext);
 
         registrationPanel.add(citylabel);
         registrationPanel.add(citytext);
@@ -202,19 +205,12 @@ public class RegistrationView extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         LoginView lpanel = new LoginView();
         View view = new View();
-
         if (e.getSource() == inlogbutton) {
-            JFrame test = new JFrame();
-            test.setVisible(false);
-            test.dispose();
             view.gameFrame(lpanel.loginPanel());
         }
 
         if (e.getSource() == registerbutton) {
-
             if (emailregistrationtext.getText() != null || passwordregistrationText.getText() != null) {
-
-                try {
                     firstname = firstnametext.getText();
                     lastname = laststnametext.getText();
                     streetname = streetnametext.getText();
@@ -225,10 +221,6 @@ public class RegistrationView extends JFrame implements ActionListener {
                     coutryname = countrytext.getText();
                     emailregistration = emailregistrationtext.getText();
                     passwordregistration = passwordregistrationText.getText();
-                } catch (Exception es) {
-                    JOptionPane.showMessageDialog(null, "Controleer je invoer", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-
                 try {
                     Pattern emailpattern = Pattern.compile("[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z]+.[a-zA-Z]{2,5}");
                     Pattern postalcodepattern = Pattern.compile("[1-9]{1}[0-9]{3}[a-zA-Z]{2}");
@@ -264,17 +256,13 @@ public class RegistrationView extends JFrame implements ActionListener {
 
                         if (user.insertUser() == 1) {
                             JOptionPane.showMessageDialog(null, "Succesvoll geregistreerd", "Succes", JOptionPane.PLAIN_MESSAGE);
-//                            view.gameFrame(registrationPanel()).dispose();
-                            JFrame test = new JFrame();
-                            test.setVisible(false);
-                            test.dispose();
                             view.gameFrame(lpanel.loginPanel());
+
                         }
                     }
 
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Controleer je invoer", "Error", JOptionPane.ERROR_MESSAGE);
-
+                    JOptionPane.showMessageDialog(null, "Er is iets misgegaan", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }

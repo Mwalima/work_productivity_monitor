@@ -105,45 +105,23 @@ public class LoginView extends JFrame implements ActionListener {
                     user.setPassword(passwordValue);
 
                     if (user.getUserData() == 1) {
-                        //if authentic, navigate user to a new page
-                        JFrame test = new JFrame();
-                        test.setVisible(false);
-                        test.dispose();
-                        //inset value into monitor view to db connectoin method becouse it is lost its value
 
                         new MonitorView(emailValue,passwordValue);
 
                         view.gameFrame(monitor.monitoringPanel());
+                        JOptionPane.showMessageDialog(this, "Typ zo goed en snel mogelijk de tekst na die onder staat. \nDe tijd gaat lopen als u in het tekst venster kllikt.", "Instructie", JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        //close previouos frame
-//                    view.gameFrame(loginPanel()).dispose();
-                        JFrame test = new JFrame();
-                        test.setVisible(false);
-                        test.dispose();
                         view.gameFrame(wrongcredentials.wrongCredentialsPanel());
                     }
                 }else{
-                    JFrame test = new JFrame();
-                    test.setVisible(false);
-                    test.dispose();
-
                     view.gameFrame(wrongcredentials.wrongCredentialsPanel());
                 }
             } catch (Exception ea) {
-                //close previous frame
-                JFrame test = new JFrame();
-                test.setVisible(false);
-                test.dispose();
-
                 view.gameFrame(wrongcredentials.wrongCredentialsPanel());
             }
         }
         if (e.getSource() == exitbutton) {
             new Reminder(1);
-
-            JFrame test = new JFrame();
-            test.setVisible(false);
-            test.dispose();
 
             dialog = new CustomDialog(view.gameFrame(this.loginPanel()), "De applicatie sluit over 3 seconden");
             dialog.setVisible(true);

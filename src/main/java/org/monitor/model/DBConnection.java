@@ -3,10 +3,7 @@ package org.monitor.model;
 import org.monitor.Main;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.logging.Logger;

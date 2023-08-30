@@ -53,7 +53,7 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
     private String seconds_string = String.format("%02d", seconds);
     private String minutes_string = String.format("%02d", minutes);
     private String hours_string = String.format("%02d", hours);
-    private final String type_tekst = "De test gaat om het zo snel en foutloos na typen van de tekst. Veel vlaggen, liederen waarin Catalonië en Spanje ('puta, puta') de hoofdrol spelen en meer dan genoeg bier om de warmte te trotseren. De fans van Barcelona hebben aan het begin van de zaterdagmiddag hun stek in het centrum van Eindhoven wel gevonden: voor de deur van het hotel waarvandaan het team straks naar het Philips-stadion vertrekt. Af en toe moeten de honderden supporters even inschikken om de stadsbus van lijn elf te laten passeren. 'Een mooi feest', zeggen Mirreia en Marcos uit Barcelona. Ze volgen de favoriet voor de finale van de Champions League al jaren. Op het mannenvoetbal is het stel een beetje uitgekeken. In de vrouwencompetitie kan je voor 20 euro een kaartje krijgen, bij de mannen is dat zeker het dubbele, zegt Marcos. En nooit zijn er problemen, dat telt voor ons ook. Vorig jaar was het stel nog in Turijn, waar Barcelona de beker aan Olympique Lyonnais moest laten. Tegen VFL Wolfsburg hopen ze op meer succes. 'Maar dit is sowieso een mooie dag', zegt Mirreia, bij de vrouwen zien we veel meer voetbal en minder agressie en theater op het veld.";
+    private final String type_tekst = "Aan de rand van een groot bos woonde eens een arme houthakker met zijn vrouw en twee kinderen. Het jongetje heette Hans en het meisje Grietje. Ze hadden maar heel weinig te eten, en eens, toen alles erg duur werd in het land, konden ze ook niet meer aan brood komen. Toen hij daar 's avonds in bed over lag te tobben en vol zorgen lag te woelen, zei hij tegen zijn vrouw:";
     /**
      * The constant shouldFill.
      */
@@ -74,7 +74,9 @@ public class MonitorView extends JFrame implements ActionListener, MouseListener
     /**
      * Instantiates a new Monitor view.
      */
-    public MonitorView() {}
+    public MonitorView() {
+
+    }
 
     /**
      * Instantiates a new Monitor view.
