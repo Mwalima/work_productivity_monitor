@@ -100,6 +100,7 @@ public class LoginView extends JFrame implements ActionListener {
                 passwordValue = passwordText.getText();
 
                 if((!isEmpty(passwordValue)) && (!isEmpty(emailValue))){
+
                     //add values to user object
                     user.setEmailadress(emailValue);
                     user.setPassword(passwordValue);

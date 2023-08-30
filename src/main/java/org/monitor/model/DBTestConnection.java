@@ -23,13 +23,11 @@ public class DBTestConnection {
                     JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION)
                 System.exit(0);
-            throw new RuntimeException(e);
         } catch (IOException e) {
             int result = JOptionPane.showConfirmDialog(null, "er is geen internet verbinding", "Confirm Exit",
                     JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION)
                 System.exit(0);
-            throw new RuntimeException(e);
         }
     }
 

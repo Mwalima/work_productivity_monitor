@@ -1,6 +1,7 @@
 package org.monitor.view;
 
 import org.monitor.View;
+import org.monitor.model.DBTestConnection;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -54,10 +55,9 @@ public class StartView extends JFrame {
         begin.addActionListener(e -> {
             registrate = new RegistrationView();
              if( e.getSource()==begin ) {
+                 DBTestConnection dbt = new DBTestConnection();
+                 dbt.runIfOpened();
                 View view = new View();
-                 JFrame test = new JFrame();
-                test.setVisible(false);
-                test.dispose();
                 view.gameFrame(registrate.registrationPanel());
             }
         });

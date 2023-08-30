@@ -1,6 +1,5 @@
 package org.monitor;
 
-import org.monitor.model.DBTestConnection;
 import org.monitor.view.StartView;
 
 import javax.swing.*;
@@ -17,7 +16,5 @@ public class Main extends JFrame {
         start = new StartView();
         view = new View();
         view.gameFrame(start.startPanel());
-        DBTestConnection dbt = new DBTestConnection();
-        dbt.runIfOpened();
     }
 }
