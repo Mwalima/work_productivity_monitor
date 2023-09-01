@@ -110,7 +110,7 @@ public class LoginView extends JFrame implements ActionListener {
                         new MonitorView(emailValue,passwordValue);
 
                         view.gameFrame(monitor.monitoringPanel());
-                        JOptionPane.showMessageDialog(this, "Typ zo goed en snel mogelijk de tekst na die onder staat. \nDe tijd gaat lopen als u in het tekst venster kllikt.", "Instructie", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Typ zo goed en snel mogelijk de tekst na die onder staat. \nDe tijd gaat lopen als u ONDER de tekst in het tekst venster klikt.", "Instructie", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         view.gameFrame(wrongcredentials.wrongCredentialsPanel());
                     }
